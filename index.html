@@ -1,0 +1,1525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>HALLOWEEN — The Story Behind the Night</title>
+<meta name="description" content="An interactive exhibition about the history and culture of Halloween.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🎃%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+<style>
+/* =====================================================
+   1. DESIGN TOKENS
+   ===================================================== */
+:root{
+  --night:#07050d; --night2:#0d0816; --plum:#2a1245; --plum2:#1a0c2e;
+  --ember:#c8501a; --ember2:#e8782a; --blood:#7a1020;
+  --candle:#f6cf86; --gold:#c9a24b; --parch:#e9d7a9; --parch2:#cfb67c; --ink:#2b1a0c;
+  --text:#ebe2d2; --muted:#b3a794; --spirit:#6fe3d0;
+  --display:'Cinzel','Trajan Pro','Times New Roman',serif;
+  --body:'Crimson Pro','Georgia','Times New Roman',serif;
+  --folk:'IM Fell English','Georgia',serif;
+  --nav-h:64px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{overflow-x:clip;scroll-behavior:smooth;scroll-padding-top:var(--nav-h);-webkit-text-size-adjust:100%}
+body{background:var(--night);color:var(--text);font-family:var(--body);font-size:clamp(18px,1.25vw,21px);line-height:1.65;overflow-x:clip;min-height:100vh}
+img,svg{max-width:100%}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--candle);outline-offset:3px;border-radius:4px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+/* grain overlay */
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opacity:.09;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+#fx{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:40}
+
+/* =====================================================
+   2. LAYOUT & TYPOGRAPHY
+   ===================================================== */
+.sec{position:relative;padding:clamp(80px,11vw,150px) 6vw;overflow:hidden}
+.wrap{max-width:1180px;margin:0 auto;position:relative;z-index:2}
+.title{font-family:var(--display);font-weight:900;font-size:clamp(2rem,5.2vw,4.3rem);line-height:1.04;letter-spacing:.02em;text-wrap:balance;text-shadow:0 0 40px rgba(200,80,26,.25)}
+.sub{font-family:var(--display);color:var(--candle);font-size:clamp(.8rem,1.1vw,.95rem);letter-spacing:.28em;margin-bottom:1rem;display:block}
+.lede{max-width:62ch;margin-top:1.4rem;color:#e0d6c4}
+.lede+.lede{margin-top:1rem}
+.center{text-align:center}.center .lede{margin-inline:auto}
+.note{font-size:.85em;color:var(--muted);font-style:italic;margin-top:1rem;max-width:62ch}
+.reveal{opacity:0;transform:translateY(34px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1);transition-delay:var(--d,0s)}
+.reveal.in{opacity:1;transform:none}
+.btn{display:inline-flex;align-items:center;gap:.6em;padding:.8em 1.7em;border:1px solid var(--gold);color:var(--candle);font-family:var(--display);letter-spacing:.2em;font-size:.82rem;font-weight:700;border-radius:999px;background:rgba(10,6,16,.4);backdrop-filter:blur(4px);transition:background .3s,color .3s,box-shadow .3s,transform .3s}
+.btn:hover{background:var(--candle);color:#2a1205;box-shadow:0 0 32px rgba(246,207,134,.5);transform:translateY(-2px)}
+.btn.small{padding:.55em 1.2em;font-size:.74rem}
+.grid{display:grid;gap:clamp(14px,2vw,26px)}
+.tag{display:inline-block;font-family:var(--display);font-size:.7rem;letter-spacing:.2em;padding:.3em .8em;border:1px solid rgba(201,162,75,.5);border-radius:999px;color:var(--candle)}
+
+/* =====================================================
+   3. NAVIGATION + CURSOR + SOUND
+   ===================================================== */
+.nav{position:fixed;top:0;left:0;right:0;height:var(--nav-h);z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 4vw;background:linear-gradient(#07050dee,#07050d00);transition:height .4s,background .4s,opacity .4s}
+.nav.small{--nav-h:52px;height:52px;background:rgba(7,5,13,.72);backdrop-filter:blur(10px);opacity:.88;border-bottom:1px solid rgba(201,162,75,.15)}
+.nav:hover{opacity:1}
+.logo{font-family:var(--display);font-weight:900;letter-spacing:.18em;text-decoration:none;color:var(--candle);font-size:.95rem;display:flex;gap:.5em;align-items:center}
+.nav ul{list-style:none;display:flex;gap:clamp(10px,1.8vw,30px)}
+.nav ul a{font-family:var(--display);font-size:.74rem;letter-spacing:.2em;text-decoration:none;color:#cfc4b2;padding:.5em 0;position:relative;transition:color .3s}
+.nav ul a::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--ember2);transform:scaleX(0);transition:transform .4s;box-shadow:0 0 10px var(--ember2)}
+.nav ul a:hover,.nav ul a.active{color:var(--candle)}
+.nav ul a.active::after,.nav ul a:hover::after{transform:scaleX(1)}
+.burger{display:none;width:44px;height:44px;border:1px solid rgba(201,162,75,.5);border-radius:50%;position:relative}
+.burger span{position:absolute;left:12px;right:12px;height:2px;background:var(--candle);transition:.3s}
+.burger span:nth-child(1){top:15px}.burger span:nth-child(2){top:21px}.burger span:nth-child(3){top:27px}
+.burger[aria-expanded=true] span:nth-child(1){top:21px;transform:rotate(45deg)}
+.burger[aria-expanded=true] span:nth-child(2){opacity:0}
+.burger[aria-expanded=true] span:nth-child(3){top:21px;transform:rotate(-45deg)}
+.sound{position:fixed;right:18px;bottom:18px;z-index:101;padding:.6em 1.1em;font-family:var(--display);font-size:.7rem;letter-spacing:.2em;border:1px solid rgba(201,162,75,.6);border-radius:999px;background:rgba(7,5,13,.8);color:var(--candle);backdrop-filter:blur(6px)}
+.sound[aria-pressed=true]{background:var(--candle);color:#2a1205}
+#cdot,#cring{position:fixed;left:0;top:0;pointer-events:none;z-index:200;border-radius:50%;opacity:0;transition:opacity .3s}
+#cdot{width:8px;height:8px;margin:-4px 0 0 -4px;background:var(--candle);box-shadow:0 0 14px 4px rgba(246,207,134,.7)}
+#cring{width:38px;height:38px;margin:-19px 0 0 -19px;border:1px solid rgba(246,207,134,.5);transition:width .3s,height .3s,margin .3s,background .3s,opacity .3s}
+#cring.big{width:64px;height:64px;margin:-32px 0 0 -32px;background:rgba(232,120,42,.12);border-color:var(--ember2)}
+body.cur #cdot,body.cur #cring{opacity:1}
+@media (pointer:coarse){#cdot,#cring{display:none}}
+
+/* =====================================================
+   4. HERO
+   ===================================================== */
+.hero{overflow:hidden;height:100vh;min-height:640px;padding:0;display:grid;place-items:center;background:linear-gradient(#05030a 0%,#150a28 55%,#2a1030 85%,#4a1a28 100%)}
+.hero .layer{position:absolute;inset:-4%;will-change:transform;transition:transform .25s ease-out}
+.stars{position:absolute;inset:0}
+.stars i{position:absolute;width:2px;height:2px;border-radius:50%;background:#fff;animation:tw var(--t,4s) ease-in-out infinite;opacity:.7}
+@keyframes tw{50%{opacity:.1;transform:scale(.6)}}
+.moon{position:absolute;left:50%;top:34%;width:min(62vmin,620px);aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;
+  background:radial-gradient(circle at 36% 34%,#e9dcb4 0,#cdb887 40%,#9a8059 72%,#6b5538 100%);
+  box-shadow:0 0 90px 24px rgba(246,222,160,.28),0 0 260px 110px rgba(180,120,200,.2);animation:moonf 14s ease-in-out infinite}
+.moon::before{content:"";position:absolute;inset:0;border-radius:50%;
+  background:radial-gradient(circle at 28% 30%,rgba(120,90,50,.28) 0 7%,transparent 8%),radial-gradient(circle at 60% 24%,rgba(120,90,50,.22) 0 5%,transparent 6%),radial-gradient(circle at 66% 62%,rgba(120,90,50,.28) 0 10%,transparent 11%),radial-gradient(circle at 36% 68%,rgba(120,90,50,.2) 0 6%,transparent 7%),radial-gradient(circle at 48% 46%,rgba(120,90,50,.15) 0 12%,transparent 13%)}
+@keyframes moonf{50%{transform:translate(-50%,-52%)}}
+.bat{position:absolute;width:42px;color:#0a0510;animation:fly var(--s,22s) linear infinite;animation-delay:var(--dl,0s);top:var(--y,20%);left:-8%}
+.bat svg{width:100%;animation:flap .35s ease-in-out infinite alternate;fill:currentColor}
+@keyframes flap{to{transform:scaleY(.55)}}
+@keyframes fly{0%{transform:translate(0,0)}50%{transform:translate(55vw,-6vh)}100%{transform:translate(118vw,4vh)}}
+.trees{position:absolute;left:0;right:0;bottom:0;width:100%;height:46%}
+.fog{position:absolute;left:-30%;width:160%;height:34%;bottom:6%;background:radial-gradient(ellipse at 50% 60%,rgba(190,170,220,.28),transparent 65%);filter:blur(24px);animation:fogm 26s ease-in-out infinite alternate}
+.fog.f2{bottom:-4%;height:30%;background:radial-gradient(ellipse at 50% 50%,rgba(220,190,170,.26),transparent 65%);animation-duration:34s;animation-direction:alternate-reverse}
+@keyframes fogm{from{transform:translateX(-8%)}to{transform:translateX(8%)}}
+.hero-pumpkin{position:absolute;left:7%;bottom:2%;width:min(24vw,250px);filter:drop-shadow(0 0 40px rgba(255,140,40,.55));z-index:3}
+.hero-pumpkin .gl{animation:flick 3.2s infinite}
+@keyframes flick{0%,100%{opacity:1}8%{opacity:.78}14%{opacity:1}40%{opacity:.88}46%{opacity:1}72%{opacity:.8}78%{opacity:.98}}
+.hero-pumpkin.p2{left:auto;right:9%;width:min(14vw,150px);bottom:1%}
+.hero-copy::before{content:"";position:absolute;inset:-12% -8%;z-index:-1;background:radial-gradient(closest-side,rgba(5,3,10,.7),rgba(5,3,10,.4) 55%,transparent 100%)}
+.hero-copy{position:relative;z-index:5;text-align:center;padding:0 5vw;margin-top:-4vh}
+.hero h1{font-family:var(--display);font-weight:900;font-size:clamp(2.1rem,10vw,9.5rem);line-height:.95;letter-spacing:.04em;white-space:nowrap;color:#fff4d8;text-shadow:0 2px 0 rgba(0,0,0,.6),0 0 30px rgba(246,207,134,.45),0 4px 60px rgba(0,0,0,.9);display:flex;justify-content:center;flex-wrap:nowrap}
+.hero h1 span{display:inline-block;opacity:0;transform:translateY(40px) scale(.9);filter:blur(10px);animation:lt 1.2s cubic-bezier(.2,.8,.2,1) forwards;animation-delay:calc(.25s + var(--i)*.11s)}
+@keyframes lt{to{opacity:1;transform:none;filter:none}}
+.hero .tagline{font-family:var(--display);font-size:clamp(1rem,2.4vw,1.9rem);letter-spacing:.34em;color:var(--candle);margin-top:1rem;opacity:0;animation:fi 1.4s 1.6s forwards}
+.hero .small{font-size:clamp(.95rem,1.3vw,1.15rem);color:#ddd0ba;margin-top:.8rem;font-style:italic;opacity:0;animation:fi 1.4s 2s forwards}
+.hero .btn{margin-top:2.2rem;opacity:0;animation:fi 1.4s 2.4s forwards}
+@keyframes fi{to{opacity:1}}
+.scroll-ind{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);z-index:6;text-align:center;font-family:var(--display);font-size:.68rem;letter-spacing:.3em;color:var(--candle);opacity:0;animation:fi 1s 3s forwards}
+.scroll-ind::after{content:"";display:block;width:1px;height:38px;margin:10px auto 0;background:linear-gradient(var(--candle),transparent);animation:drop 2s ease-in-out infinite}
+@keyframes drop{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+/* =====================================================
+   5. WHAT IS HALLOWEEN
+   ===================================================== */
+#what{background:radial-gradient(ellipse at 80% 20%,#2a1245 0,transparent 55%),var(--night2)}
+.what-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:6vw;align-items:center}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:1.6rem}
+.chips .tag{font-size:.78rem}
+.cal{position:relative;width:min(100%,380px);aspect-ratio:3/4;margin:0 auto;border-radius:18px;background:linear-gradient(160deg,#2b1440,#12091f);border:1px solid rgba(201,162,75,.5);box-shadow:0 0 70px rgba(200,80,26,.35),inset 0 0 60px rgba(0,0,0,.6);cursor:pointer;text-align:center;overflow:hidden;transition:transform .5s,box-shadow .5s}
+.cal:hover,.cal.on{transform:rotate(-2deg) scale(1.03);box-shadow:0 0 110px rgba(232,120,42,.55),inset 0 0 60px rgba(0,0,0,.6)}
+.cal .top{background:linear-gradient(var(--blood),#4c0b16);padding:.9rem;font-family:var(--display);letter-spacing:.4em;font-weight:700;color:var(--candle)}
+.cal .num{font-family:var(--display);font-weight:900;font-size:clamp(7rem,13vw,10.5rem);line-height:1;margin-top:3rem;color:#ffe9b5;text-shadow:0 0 30px #ff9a3c,0 0 80px #c8501a;animation:flick 4s infinite}
+.cal .rev{position:absolute;inset:0;display:grid;place-items:center;padding:2rem;background:rgba(15,7,24,.94);font-family:var(--folk);font-size:1.45rem;line-height:1.35;color:var(--candle);opacity:0;transition:opacity .5s}
+.cal:hover .rev,.cal.on .rev{opacity:1}
+.cal .hint{position:absolute;bottom:14px;left:0;right:0;font-size:.8rem;color:var(--muted);letter-spacing:.1em}
+.morph{margin-top:5vw;text-align:center;padding:clamp(28px,4vw,56px);border:1px solid rgba(201,162,75,.3);border-radius:22px;background:linear-gradient(rgba(42,18,69,.35),rgba(10,5,18,.6))}
+.morph .word{font-family:var(--display);font-weight:900;font-size:clamp(1.7rem,6vw,5rem);color:var(--candle);min-height:1.2em;transition:opacity .45s,filter .45s,transform .45s;text-shadow:0 0 30px rgba(246,207,134,.4)}
+.morph .word.out{opacity:0;filter:blur(12px);transform:scale(1.04)}
+.morph .cap{min-height:3.2em;color:#d9ceb9;margin:.8rem auto 1.2rem;max-width:56ch}
+.dots{display:flex;justify-content:center;gap:10px;margin-bottom:1.2rem}
+.dots i{width:10px;height:10px;border-radius:50%;background:#4b3a55;transition:.4s}.dots i.on{background:var(--ember2);box-shadow:0 0 14px var(--ember2)}
+
+/* =====================================================
+   6. SAMHAIN (parchment + scene)
+   ===================================================== */
+#origins{background:linear-gradient(#0d0816,#160b1f 50%,#0d0816)}
+.scene{margin-top:2.4rem;border-radius:20px;overflow:hidden;border:1px solid rgba(201,162,75,.45);box-shadow:0 30px 80px rgba(0,0,0,.6);position:relative;background:#000}
+.scene svg{display:block;width:100%;height:auto}
+.scene-ui{display:flex;flex-wrap:wrap;align-items:center;gap:14px 24px;padding:16px 20px;background:rgba(10,6,16,.9)}
+.stage-btns{display:flex;gap:8px;flex-wrap:wrap}
+.stage-btns button{padding:.55em 1.2em;border:1px solid rgba(201,162,75,.5);border-radius:999px;font-family:var(--display);font-size:.75rem;letter-spacing:.2em;color:#d8ccb6;transition:.3s}
+.stage-btns button.on,.stage-btns button:hover{background:var(--ember);border-color:var(--ember2);color:#fff;box-shadow:0 0 22px rgba(232,120,42,.5)}
+.scene-ui input[type=range]{flex:1;min-width:150px;accent-color:var(--ember2)}
+.scene-cap{padding:0 20px 18px;background:rgba(10,6,16,.9);min-height:4.4em;font-size:1.05em;color:#e6dcc8}
+.parch{position:relative;color:var(--ink);background:radial-gradient(ellipse at 20% 10%,#f3e6c0,transparent 60%),radial-gradient(ellipse at 90% 100%,#c2a468,transparent 55%),var(--parch);border-radius:6px;padding:clamp(22px,3.5vw,44px);font-family:var(--folk);box-shadow:0 20px 60px rgba(0,0,0,.6),inset 0 0 70px rgba(110,70,20,.45);}
+.parch h3{font-family:var(--display);font-weight:700;letter-spacing:.06em;margin-bottom:.6rem;font-size:1.25rem}
+.parch p,.parch li{font-size:1.1rem;line-height:1.6}
+.parch ul{padding-left:1.2em}
+.more{margin-top:2rem}
+.more-panel{max-height:0;overflow:hidden;transition:max-height .9s ease,margin .5s}
+.more.open .more-panel{max-height:1400px;margin-top:1.4rem}
+.cols3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+
+/* =====================================================
+   7. THE VEIL (scroll-driven)
+   ===================================================== */
+.veil{padding:0;background:#05030a;overflow:visible}
+.veil-intro{padding:clamp(80px,10vw,130px) 6vw 40px;text-align:center}
+.veil-track{position:relative;height:230vh}
+.veil-stage{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;overflow:hidden;--p:0;--gh:0;--band:72px}
+.world{flex:1;position:relative;overflow:hidden}
+.living{background:linear-gradient(#0a0a1c,#241522 70%,#4a2418)}
+.spirit{background:linear-gradient(#0d2a3a,#1a1038 60%,#05030a);overflow:visible}
+.world h3{position:absolute;font-family:var(--display);letter-spacing:.3em;font-size:clamp(.75rem,1.2vw,1rem);padding:0 5vw}
+.living h3{bottom:20px;color:#ffc98a}.spirit h3{top:20px;color:var(--spirit)}
+.village{position:absolute;bottom:0;left:0;width:100%;height:70%}
+.band{height:var(--band);position:relative;z-index:3;background:linear-gradient(90deg,transparent,rgba(111,227,208,.9),rgba(255,210,150,.95),rgba(111,227,208,.9),transparent);box-shadow:0 0 calc(30px + var(--p)*90px) calc(6px + var(--p)*20px) rgba(160,240,220,.45);filter:blur(calc(6px - var(--p)*4px));animation:shim 5s ease-in-out infinite alternate}
+@keyframes shim{to{opacity:.8}}
+.orb{position:absolute;width:var(--w,12px);height:var(--w,12px);border-radius:50%;background:radial-gradient(#bffcf0,transparent 70%);left:var(--x);top:var(--y);animation:orb 9s ease-in-out infinite alternate;animation-delay:var(--dl,0s);opacity:.8}
+@keyframes orb{to{transform:translate(30px,-40px)}}
+.gh{position:absolute;z-index:4;font-size:clamp(2rem,5vw,4rem);left:var(--x);top:var(--y);opacity:var(--gh);filter:blur(1px) drop-shadow(0 0 18px #8ff);transform:translateY(calc(var(--p)*var(--d)*-1px))}
+.veil-cap{position:absolute;z-index:5;left:50%;top:50%;transform:translate(-50%,-50%);width:min(88vw,680px);text-align:center;font-size:clamp(1.05rem,1.8vw,1.5rem);pointer-events:none}
+.veil-cap p{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);opacity:0;transition:opacity .6s;padding:1.1rem 1.4rem;background:rgba(5,3,10,.72);border-radius:14px;backdrop-filter:blur(6px);border:1px solid rgba(111,227,208,.3)}
+.veil-cap p.on{opacity:1}
+.veil-bar{position:absolute;right:20px;top:50%;width:3px;height:140px;margin-top:-70px;background:rgba(255,255,255,.15);z-index:6;border-radius:3px}
+.veil-bar i{position:absolute;left:0;right:0;top:0;height:calc(var(--p)*100%);background:var(--spirit);border-radius:3px;box-shadow:0 0 12px var(--spirit)}
+
+/* =====================================================
+   8. COSTUMES
+   ===================================================== */
+#costumes{background:radial-gradient(ellipse at 15% 90%,#4a0f1e 0,transparent 50%),radial-gradient(ellipse at 90% 10%,#2a1245 0,transparent 50%),#0b0613}
+.evo{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin:3rem 0 1rem;position:relative}
+.evo::before{content:"";position:absolute;left:8%;right:8%;top:42px;height:2px;background:linear-gradient(90deg,var(--blood),var(--ember2),var(--candle));box-shadow:0 0 14px var(--ember2)}
+.evo button{position:relative;text-align:center;padding:0 10px;font-family:var(--display);letter-spacing:.14em;font-size:.82rem}
+.evo .ic{display:grid;place-items:center;width:84px;height:84px;margin:0 auto 14px;border-radius:50%;background:#150a22;border:2px solid var(--gold);font-size:2.4rem;transition:.4s;position:relative}
+.evo button:hover .ic,.evo button.on .ic,.evo button:focus-visible .ic{transform:scale(1.15);background:var(--ember);box-shadow:0 0 40px rgba(232,120,42,.7)}
+.evo-panel{min-height:5.5em;max-width:68ch;margin:1.4rem auto 0;text-align:center;font-size:1.1em;padding:1.2rem 1.6rem;border:1px solid rgba(201,162,75,.35);border-radius:14px;background:rgba(20,10,30,.7)}
+.costumes{grid-template-columns:repeat(5,1fr);margin-top:3.5rem}
+.cc{position:relative;text-align:center;padding:26px 14px 22px;border-radius:16px;background:linear-gradient(170deg,rgba(60,24,90,.7),rgba(15,8,25,.9));border:1px solid rgba(201,162,75,.3);transition:transform .4s,border-color .4s,box-shadow .4s;overflow:hidden}
+.cc .em{font-size:clamp(3rem,5vw,4.4rem);display:inline-block;transition:transform .4s}
+.cc h3{font-family:var(--display);font-size:1rem;letter-spacing:.14em;margin:.7rem 0 .4rem;color:var(--candle)}
+.cc p{font-size:.92rem;line-height:1.45;color:#cfc4b2}
+.cc:hover,.cc:focus-visible{transform:translateY(-10px);border-color:var(--ember2);box-shadow:0 20px 50px rgba(200,80,26,.35)}
+.cc.witch:hover .em{animation:wig .6s ease-in-out infinite alternate}
+.cc.ghost:hover .em{animation:flt 1.4s ease-in-out infinite}
+.cc.vamp:hover .em{animation:vam .5s ease-in-out infinite alternate}
+.cc.skel:hover .em{animation:shk .12s linear infinite}
+.cc.mon:hover .em{animation:bnc .5s ease-in-out infinite}
+@keyframes wig{from{transform:rotate(-14deg)}to{transform:rotate(14deg) scale(1.1)}}
+@keyframes flt{50%{transform:translateY(-16px) scale(1.08);filter:drop-shadow(0 0 16px #fff)}}
+@keyframes vam{from{transform:scale(1)}to{transform:scale(1.18,.92)}}
+@keyframes shk{0%{transform:translateX(-3px)}50%{transform:translateX(3px) rotate(3deg)}100%{transform:translateX(-3px)}}
+@keyframes bnc{50%{transform:translateY(-20px) rotate(-6deg)}}
+
+/* =====================================================
+   9. PUMPKINS
+   ===================================================== */
+#pumpkins{background:linear-gradient(#0b0613,#1a0a08 60%,#0b0613);transition:background 1s}
+#pumpkins.warm{background:linear-gradient(#0b0613,#3a1507 55%,#0b0613)}
+.pk-grid{display:grid;grid-template-columns:1fr 1fr;gap:5vw;align-items:center;margin-top:2.4rem}
+.pk-stage{position:relative;aspect-ratio:1;max-width:560px;margin:0 auto;width:100%;border-radius:50%}
+.pk-stage .halo{position:absolute;inset:-18%;border-radius:50%;background:radial-gradient(circle,rgba(255,150,50,.6),rgba(200,80,26,.25) 45%,transparent 70%);opacity:0;transition:opacity .8s;pointer-events:none}
+.pk-stage.lit .halo{opacity:1;animation:flick 3.5s infinite}
+.pk-stage svg{position:relative;width:100%;height:100%;cursor:pointer;overflow:visible}
+.pk-stage .face{fill:#120704;transition:fill .5s,filter .5s}
+.pk-stage.lit .face{fill:#ffd27a;filter:drop-shadow(0 0 10px #ff9a3c) drop-shadow(0 0 24px #ff7a1c)}
+.spark{position:absolute;width:5px;height:5px;border-radius:50%;background:#ffc46b;box-shadow:0 0 10px #ff9a3c;pointer-events:none;animation:spk 2.2s ease-out forwards}
+@keyframes spk{to{transform:translate(var(--dx),-170px);opacity:0}}
+.pk-ui{display:flex;gap:14px;flex-wrap:wrap;margin:1.4rem 0}
+.pk-ui input{flex:1;min-width:160px;accent-color:var(--ember2)}
+.pk-label{font-family:var(--display);font-size:1.8rem;color:var(--candle);letter-spacing:.12em;min-height:1.3em}
+.hintp{font-size:.9rem;color:var(--muted);font-style:italic}
+.steps2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:1.4rem}
+.steps2 div{padding:16px 18px;border-left:3px solid var(--ember2);background:rgba(255,255,255,.04);border-radius:0 12px 12px 0;font-size:.95rem;line-height:1.5}
+.steps2 b{display:block;font-family:var(--display);color:var(--candle);letter-spacing:.1em;margin-bottom:.2rem}
+
+/* =====================================================
+   10. JACK — folklore book
+   ===================================================== */
+#jack{background:radial-gradient(ellipse at 50% 0,#2a1245,transparent 60%),#07050d}
+.book-wrap{perspective:2200px;margin:3rem auto 0;max-width:980px}
+.book{position:relative;height:clamp(430px,48vw,540px);display:grid;grid-template-columns:1fr 1fr;border-radius:8px;background:#2a1409;padding:10px;box-shadow:0 40px 90px rgba(0,0,0,.8),0 0 0 2px #4a2511}
+.book::before{content:"";position:absolute;left:50%;top:10px;bottom:10px;width:6px;margin-left:-3px;background:linear-gradient(90deg,transparent,rgba(0,0,0,.5),transparent);z-index:50;pointer-events:none}
+.pg{background:radial-gradient(ellipse at 80% 20%,#f3e6c0,transparent 60%),var(--parch);color:var(--ink);font-family:var(--folk);padding:clamp(18px,3vw,38px);display:flex;flex-direction:column;justify-content:center;overflow:hidden}
+.pg.left{border-radius:4px 0 0 4px;box-shadow:inset -30px 0 40px -20px rgba(80,40,10,.5)}
+.leaf{position:absolute;top:10px;bottom:10px;left:50%;width:calc(50% - 10px);transform-origin:left center;transform-style:preserve-3d;transition:transform 1.1s cubic-bezier(.5,.1,.2,1)}
+.leaf.flip{transform:rotateY(-180deg)}
+.leaf .f,.leaf .b{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.leaf .f{border-radius:0 4px 4px 0;box-shadow:inset 30px 0 40px -20px rgba(80,40,10,.5)}
+.leaf .b{transform:rotateY(180deg);border-radius:4px 0 0 4px;box-shadow:inset -30px 0 40px -20px rgba(80,40,10,.5)}
+.pg h3{font-family:var(--display);font-size:clamp(1.1rem,2vw,1.6rem);margin-bottom:.8rem;color:#4a1a0c}
+.pg p{font-size:clamp(1rem,1.5vw,1.25rem);line-height:1.55}
+.pg .big{font-size:clamp(4rem,9vw,7rem);text-align:center;filter:drop-shadow(0 6px 10px rgba(80,30,0,.4))}
+.pg .cap{text-align:center;font-style:italic;margin-top:.6rem;font-size:1rem}
+.pg .cover h3{text-align:center;font-size:1.6rem}
+.pg .cover{text-align:center}
+#pkSvg:focus-visible{outline-offset:-6px;border-radius:50%}
+.book-ui{display:flex;justify-content:center;align-items:center;gap:20px;margin-top:2rem}
+.book-ui span{font-family:var(--display);letter-spacing:.2em;font-size:.8rem;color:var(--muted)}
+.btn[disabled]{opacity:.35;pointer-events:none}
+
+/* =====================================================
+   11. TRICK OR TREAT
+   ===================================================== */
+#traditions{background:linear-gradient(#07050d,#150a2a 50%,#07050d)}
+.tot{display:grid;grid-template-columns:1fr 1fr;gap:5vw;align-items:center;margin-top:2.4rem}
+.street{position:relative;aspect-ratio:1.1;max-width:560px;margin:0 auto;width:100%;background:linear-gradient(#0c1030,#2a1745 70%,#1a0d22);border-radius:20px;overflow:hidden;border:1px solid rgba(201,162,75,.4);box-shadow:0 30px 70px rgba(0,0,0,.6)}
+.street .m{position:absolute;right:10%;top:7%;width:15%;aspect-ratio:1;border-radius:50%;background:#fbefc8;box-shadow:0 0 50px 14px rgba(255,240,180,.45)}
+.street .ground{position:absolute;left:0;right:0;bottom:0;height:18%;background:#0b0610}
+.house{position:absolute;left:18%;right:18%;bottom:14%;height:56%}
+.house .body{position:absolute;left:0;right:0;bottom:0;height:68%;background:linear-gradient(#3a2236,#241426);border:2px solid #130a18}
+.house .roof{position:absolute;left:-7%;right:-7%;bottom:68%;height:42%;background:#170b1c;clip-path:polygon(50% 0,100% 100%,0 100%)}
+.house .win{position:absolute;left:10%;top:38%;width:24%;height:26%;background:#ffcf72;box-shadow:0 0 30px #ffb43c;border:3px solid #130a18;animation:flick 3s infinite}
+.house .win2{left:auto;right:10%}
+.door-frame{position:absolute;left:38%;width:26%;bottom:0;height:62%;background:radial-gradient(ellipse at 50% 70%,#ffd98a,#d68a2a 60%,#6a3a10);border:3px solid #130a18;border-bottom:0;perspective:600px}
+.door{position:absolute;inset:0;background:linear-gradient(90deg,#5a2a12,#7a3a18);border-right:2px solid #2a1206;transform-origin:left center;transition:transform 1s cubic-bezier(.4,.1,.2,1);display:grid;place-items:center}
+.door::after{content:"";width:8px;height:8px;background:var(--candle);border-radius:50%;position:absolute;right:12%;top:52%}
+.door.open{transform:rotateY(-110deg)}
+.door.knock{animation:kn .13s 6 alternate}
+@keyframes kn{to{transform:translateX(2px) rotate(.6deg)}}
+.kid{position:absolute;bottom:8%;left:4%;font-size:clamp(2rem,6vw,3.6rem);filter:drop-shadow(0 0 10px #000)}
+.bubble{position:absolute;left:50%;top:3%;transform:translateX(-50%) scale(.3);opacity:0;background:#fff4d8;color:#3a1206;font-family:var(--display);font-weight:900;padding:.5em 1em;border-radius:20px;white-space:nowrap;font-size:clamp(.9rem,2.4vw,1.5rem);transition:.5s cubic-bezier(.2,1.6,.3,1);z-index:6;letter-spacing:.06em}
+.bubble.show{opacity:1;transform:translateX(-50%) scale(1)}
+.candy{position:absolute;font-size:clamp(1.3rem,3.4vw,2rem);bottom:30%;left:48%;opacity:0;animation:cand 1.4s ease-out forwards;z-index:5}
+@keyframes cand{0%{opacity:1;transform:translate(0,0) scale(.4)}60%{opacity:1;transform:translate(var(--cx),var(--cy)) scale(1.1)}100%{opacity:1;transform:translate(var(--cx),calc(var(--cy) + 130px)) scale(1)}}
+.bag{font-family:var(--display);letter-spacing:.14em;margin:1rem 0;color:var(--candle)}
+.bag b{font-size:2rem;margin:0 .3em}
+.tot-list{display:grid;gap:12px;margin-top:1.4rem}
+.tot-list div{padding:14px 18px;border-radius:12px;background:rgba(255,255,255,.04);border-left:3px solid var(--gold);font-size:.97rem;line-height:1.5}
+.tot-list b{font-family:var(--display);color:var(--candle);letter-spacing:.08em}
+
+/* =====================================================
+   12. CHRISTIANITY
+   ===================================================== */
+#christianity{background:radial-gradient(ellipse at 50% 100%,#3a1a50 0,transparent 60%),#0a0612}
+.days{grid-template-columns:repeat(3,1fr);margin-top:3rem}
+.day{position:relative;padding:28px 22px;border-radius:16px;border:1px solid rgba(201,162,75,.35);background:linear-gradient(rgba(60,30,90,.4),rgba(10,5,20,.8));overflow:hidden}
+.day::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% -20%,rgba(246,207,134,.25),transparent 60%)}
+.day .d{font-family:var(--display);font-weight:900;font-size:2.6rem;color:var(--candle);position:relative}
+.day h3{font-family:var(--display);letter-spacing:.08em;font-size:1.1rem;margin:.3rem 0 .6rem;position:relative}
+.day p{font-size:.97rem;line-height:1.5;color:#d6cbb6;position:relative}
+.chain{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin:4rem 0 1rem;position:relative}
+.chain::before{content:"";position:absolute;left:6%;right:6%;top:22px;height:2px;background:linear-gradient(90deg,var(--gold),var(--ember2),var(--spirit));opacity:.7}
+.chain button{text-align:center;padding:0 8px;font-family:var(--display);font-size:.78rem;letter-spacing:.1em;line-height:1.3}
+.chain i{display:block;width:46px;height:46px;border-radius:50%;margin:0 auto 12px;background:#150a22;border:2px solid var(--gold);transition:.4s;position:relative}
+.chain button.on i,.chain button:hover i{background:var(--ember2);transform:scale(1.22);box-shadow:0 0 30px var(--ember2)}
+.chain-panel{max-width:70ch;margin:1rem auto 0;padding:1.3rem 1.6rem;border-radius:14px;border:1px solid rgba(201,162,75,.35);background:rgba(20,10,30,.75);min-height:7em;text-align:center}
+.chain-panel h3{font-family:var(--display);color:var(--candle);margin-bottom:.4rem;letter-spacing:.08em}
+.warn{margin-top:2rem;padding:1.2rem 1.6rem;border:1px dashed var(--gold);border-radius:12px;background:rgba(201,162,75,.07)}
+
+/* =====================================================
+   13. AMERICA MAP
+   ===================================================== */
+#america{background:linear-gradient(#0a0612,#08162a 50%,#0a0612)}
+.map{margin-top:2.6rem;border-radius:20px;border:1px solid rgba(111,180,227,.35);background:radial-gradient(ellipse at 50% 50%,#10294a,#071426);padding:10px;box-shadow:0 30px 80px rgba(0,0,0,.6);position:relative}
+.map svg{display:block;width:100%;height:auto}
+.land{fill:#16314f;stroke:#3f78a8;stroke-width:1.5}
+.route{fill:none;stroke:var(--candle);stroke-width:4;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;filter:drop-shadow(0 0 8px #ffbf5a)}
+.route2{fill:none;stroke:var(--ember2);stroke-width:2.5;stroke-dasharray:6 8;opacity:0;filter:drop-shadow(0 0 6px #ff8a3a)}
+.map.go .route{animation:draw 3.2s .3s ease-in-out forwards}
+.map.go .route2{animation:fadein 1s 3.4s forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes fadein{to{opacity:1}}
+.pt{fill:var(--candle)}.pt.pulse{animation:pls 2s infinite}
+@keyframes pls{50%{r:16;opacity:.4}}
+.map text{font-family:var(--display);fill:#d5e6f5;font-size:15px;letter-spacing:.15em}
+.mchips{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:1.6rem}
+.mchips div{padding:16px 18px;border-radius:12px;background:rgba(255,255,255,.05);border-top:3px solid var(--ember2);font-size:.96rem;line-height:1.5}
+.mchips b{display:block;font-family:var(--display);letter-spacing:.1em;color:var(--candle);margin-bottom:.2rem}
+
+/* =====================================================
+   14. POPULAR CULTURE TIMELINE
+   ===================================================== */
+#popculture{background:radial-gradient(ellipse at 20% 0,#4a0f1e 0,transparent 55%),#0a0612}
+.vt{display:grid;grid-template-columns:repeat(5,1fr);gap:0;margin:3.5rem 0 1rem;position:relative}
+.vt::before{content:"";position:absolute;left:5%;right:5%;top:28px;height:2px;background:linear-gradient(90deg,var(--gold),var(--ember2),var(--blood))}
+.vt button{text-align:center;padding:0 6px;font-family:var(--display);font-size:.75rem;letter-spacing:.08em;line-height:1.3}
+.vt .nd{display:grid;place-items:center;width:58px;height:58px;margin:0 auto 12px;border-radius:50%;background:#150a22;border:2px solid var(--gold);font-size:1.5rem;transition:.4s}
+.vt button.on .nd,.vt button:hover .nd{background:var(--ember);transform:scale(1.18);box-shadow:0 0 34px rgba(232,120,42,.7)}
+.vt-panel{max-width:72ch;margin:1rem auto 0;padding:1.4rem 1.8rem;border-radius:14px;border:1px solid rgba(201,162,75,.35);background:rgba(25,10,30,.8);text-align:center;min-height:9em}
+.vt-panel h3{font-family:var(--display);color:var(--candle);letter-spacing:.08em;margin-bottom:.4rem}
+.shift{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:3rem}
+.shift>div{padding:24px;border-radius:16px;background:rgba(255,255,255,.04);border:1px solid rgba(201,162,75,.25)}
+.shift h3{font-family:var(--display);color:var(--candle);letter-spacing:.1em;margin-bottom:.6rem;font-size:1.05rem}
+.shift ul{padding-left:1.1em;line-height:1.7}
+
+/* =====================================================
+   15. TODAY: COUNTRIES, JAPAN
+   ===================================================== */
+#today{background:linear-gradient(#0a0612,#150a2a)}
+.countries{grid-template-columns:repeat(4,1fr);margin-top:3rem}
+.flipc{perspective:1100px;height:230px;cursor:pointer;border-radius:16px}
+.flipc .in{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .8s cubic-bezier(.3,.1,.2,1)}
+.flipc.on .in,.flipc.hov:hover .in{transform:rotateY(180deg)}
+.flipc .fc,.flipc .bc{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:16px;padding:20px 18px;display:flex;flex-direction:column;justify-content:center;text-align:center;border:1px solid rgba(201,162,75,.4);transition:box-shadow .4s}
+.flipc:hover .fc{box-shadow:0 0 40px rgba(232,120,42,.35)}
+.fc{background:linear-gradient(160deg,#2a1245,#120922)}
+.bc{background:linear-gradient(160deg,#4a1a14,#1c0a12);transform:rotateY(180deg);font-size:.96rem;line-height:1.45}
+.fc .fl{font-size:3rem}.fc h3{font-family:var(--display);letter-spacing:.14em;margin:.4rem 0;color:var(--candle)}.fc p{font-size:.92rem;color:#cdbfa8;line-height:1.4}
+.bc b{font-family:var(--display);color:var(--candle);letter-spacing:.1em;display:block;margin-bottom:.4rem}
+#japan{background:linear-gradient(135deg,#1a0820 0,#2a0f2a 50%,#10061a 100%)}
+#japan::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 85% 20%,rgba(200,40,60,.3),transparent 40%),radial-gradient(circle at 10% 90%,rgba(246,207,134,.12),transparent 40%)}
+.jp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:3rem}
+.jp{padding:24px;border-radius:16px;background:rgba(10,4,16,.65);border:1px solid rgba(255,200,170,.25);transition:.4s}
+.jp:hover{transform:translateY(-6px);border-color:var(--ember2)}
+.jp .e{font-size:2rem}.jp h3{font-family:var(--display);color:var(--candle);letter-spacing:.1em;margin:.4rem 0;font-size:1.02rem}.jp p{font-size:.96rem;line-height:1.5;color:#d8cdb8}
+.compare{margin-top:2rem;display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.compare>div{padding:22px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1)}
+.compare h3{font-family:var(--display);letter-spacing:.1em;color:var(--candle);margin-bottom:.4rem;font-size:1rem}
+
+/* =====================================================
+   16. SYMBOLS
+   ===================================================== */
+#symbols{background:radial-gradient(ellipse at 50% 0,#2a1245,transparent 60%),#07050d}
+.syms{grid-template-columns:repeat(4,1fr);margin-top:3rem}
+.sy{text-align:center;padding:28px 14px 22px;border-radius:18px;background:linear-gradient(170deg,rgba(60,24,90,.55),rgba(12,6,20,.95));border:1px solid rgba(201,162,75,.3);transition:.45s;position:relative;overflow:hidden}
+.sy::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 30%,rgba(246,207,134,.22),transparent 60%);opacity:0;transition:.5s}
+.sy:hover,.sy:focus-visible{transform:translateY(-10px) rotate(-1.2deg);border-color:var(--candle);box-shadow:0 20px 60px rgba(232,120,42,.35)}
+.sy:hover::after{opacity:1}
+.sy .i{font-size:clamp(3rem,5vw,4.2rem);display:block;transition:transform .5s;position:relative;z-index:1}
+.sy:hover .i{transform:scale(1.22) rotate(8deg)}
+.sy h3{font-family:var(--display);letter-spacing:.14em;margin:.7rem 0 .3rem;color:var(--candle);font-size:1rem;position:relative;z-index:1}
+.sy p{font-size:.92rem;line-height:1.4;color:#cfc4b2;position:relative;z-index:1}
+dialog{margin:auto;border:1px solid var(--gold);border-radius:20px;max-width:min(92vw,620px);width:100%;padding:0;background:transparent;color:var(--text)}
+dialog::backdrop{background:rgba(3,1,8,.82);backdrop-filter:blur(6px)}
+.dlg{padding:clamp(24px,4vw,44px);background:radial-gradient(circle at 50% 0,#3a1a50,#12081f 70%);text-align:center;position:relative;animation:pop .5s cubic-bezier(.2,1.4,.3,1)}
+@keyframes pop{from{transform:scale(.8);opacity:0}}
+.dlg .i{font-size:5rem;display:block;animation:flt 3s ease-in-out infinite}
+.dlg h3{font-family:var(--display);font-size:1.7rem;letter-spacing:.14em;color:var(--candle);margin:.4rem 0 .8rem}
+.dlg p{text-align:left;line-height:1.6;margin-bottom:.8rem}
+.dlg .x{position:absolute;right:14px;top:12px;width:42px;height:42px;border:1px solid var(--gold);border-radius:50%;font-size:1.3rem;color:var(--candle)}
+
+/* =====================================================
+   17. HORIZONTAL TIMELINE
+   ===================================================== */
+#journey{background:#07050d}
+.tl-ui{display:flex;align-items:center;gap:14px;margin-top:2rem}
+.tl-prog{flex:1;height:3px;background:rgba(255,255,255,.12);border-radius:3px;overflow:hidden}
+.tl-prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--ember2));box-shadow:0 0 12px var(--ember2)}
+.tl{margin:2rem -6vw 0;padding:0 6vw 20px;overflow-x:auto;scroll-snap-type:x mandatory;cursor:grab;scrollbar-width:thin;scrollbar-color:var(--ember) transparent}
+.tl.drag{cursor:grabbing;scroll-snap-type:none}
+.tl-track{display:flex;gap:28px;position:relative;width:max-content;padding-top:70px}
+.tl-track::before{content:"";position:absolute;left:0;right:0;top:34px;height:3px;background:linear-gradient(90deg,var(--gold),var(--ember2),var(--blood),var(--spirit));box-shadow:0 0 14px var(--ember2)}
+.ti{position:relative;width:min(78vw,380px);scroll-snap-align:start;padding:26px 26px 28px;border-radius:16px;background:linear-gradient(170deg,rgba(60,24,90,.6),rgba(12,6,20,.95));border:1px solid rgba(201,162,75,.35);opacity:.25;transform:translateY(30px);transition:opacity .9s,transform .9s;user-select:none}
+.ti.in{opacity:1;transform:none}
+.ti::before{content:"";position:absolute;top:-45px;left:26px;width:22px;height:22px;border-radius:50%;background:var(--ember2);box-shadow:0 0 22px var(--ember2),0 0 0 6px rgba(232,120,42,.25)}
+.ti .yr{font-family:var(--display);color:var(--ember2);font-size:.8rem;letter-spacing:.2em}
+.ti h3{font-family:var(--display);font-size:1.3rem;letter-spacing:.06em;margin:.4rem 0 .6rem;color:var(--candle)}
+.ti p{font-size:.97rem;line-height:1.55;color:#d6cbb6}
+.ti .em{font-size:2.2rem;display:block;margin-bottom:.3rem}
+
+/* =====================================================
+   18. DID YOU KNOW + MYTH/FACT
+   ===================================================== */
+#trivia{background:radial-gradient(ellipse at 90% 20%,#2a1245,transparent 55%),#0a0612}
+.dyk{grid-template-columns:repeat(3,1fr);margin-top:3rem}
+.dyk .flipc{height:250px}
+.dyk .fc{background:linear-gradient(160deg,#3a1250,#150a26);font-size:1.15rem;line-height:1.4}
+.dyk .fc::before{content:"DID YOU KNOW?";font-family:var(--display);letter-spacing:.25em;font-size:.68rem;color:var(--ember2);margin-bottom:.8rem}
+.dyk .hint2{position:absolute;bottom:12px;left:0;right:0;font-size:.74rem;color:var(--muted);letter-spacing:.12em}
+#myth{background:linear-gradient(#0a0612,#1a0a14)}
+.myths{grid-template-columns:repeat(3,1fr);margin-top:3rem}
+.myths .flipc{height:270px}
+.myths .fc{background:linear-gradient(160deg,#2a1a10,#120a08);font-size:1.18rem;font-family:var(--folk)}
+.myths .fc::before{content:"MYTH OR FACT?";font-family:var(--display);letter-spacing:.25em;font-size:.68rem;color:var(--candle);margin-bottom:.8rem}
+.myths .bc{font-size:.97rem}
+.myths .bc strong{font-family:var(--display);font-size:2rem;letter-spacing:.14em;display:block;margin-bottom:.3rem}
+.myths .bc.t{background:linear-gradient(160deg,#0f3a2e,#07161a)}.myths .bc.t strong{color:#7bf0c4}
+.myths .bc.f{background:linear-gradient(160deg,#4a1220,#1a0610)}.myths .bc.f strong{color:#ff7a8a}
+.score{text-align:center;margin-top:2rem;font-family:var(--display);letter-spacing:.2em;color:var(--candle)}
+
+/* =====================================================
+   19. BIG IDEA + FINAL
+   ===================================================== */
+#bigidea{background:radial-gradient(ellipse at 50% 50%,#3a1250 0,#0a0612 70%);text-align:center;padding-block:clamp(110px,16vw,220px)}
+#bigidea .title{font-size:clamp(1.8rem,4.6vw,3.8rem);max-width:20ch;margin:0 auto}
+.conn{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin:2.4rem 0}
+.conn .tag{font-size:.8rem;padding:.55em 1.2em;background:rgba(255,255,255,.04)}
+.counters{display:flex;justify-content:center;flex-wrap:wrap;gap:clamp(24px,6vw,80px);margin:3rem 0}
+.counters b{display:block;font-family:var(--display);font-size:clamp(2.4rem,6vw,4.4rem);color:var(--candle);text-shadow:0 0 30px rgba(232,120,42,.6)}
+.counters span{font-size:.92rem;color:#cdbfa8;display:block;max-width:20ch;margin:0 auto}
+.epic{margin-top:3rem;font-family:var(--display);font-weight:900}
+.epic div{font-size:clamp(2.2rem,8.5vw,7.5rem);line-height:1.02;opacity:0;letter-spacing:.3em;filter:blur(14px);transition:opacity 1.8s,letter-spacing 2.4s cubic-bezier(.2,.7,.2,1),filter 1.8s}
+.epic div:nth-child(1){color:#fff2cf;text-shadow:0 0 40px rgba(246,207,134,.7)}
+.epic div:nth-child(2){color:var(--ember2);transition-delay:1s;text-shadow:0 0 50px rgba(200,80,26,.8)}
+.epic.in div{opacity:1;letter-spacing:.04em;filter:none}
+#meaning{background:linear-gradient(#0a0612,#07050d);text-align:center}
+.opts{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:860px;margin:3rem auto 0}
+.opt{padding:26px 10px;border-radius:18px;border:1px solid rgba(201,162,75,.4);background:linear-gradient(170deg,rgba(60,24,90,.5),rgba(12,6,20,.9));font-family:var(--display);letter-spacing:.14em;font-size:.95rem;transition:.4s}
+.opt span{display:block;font-size:2.6rem;margin-bottom:.4rem;transition:transform .4s}
+.opt:hover,.opt.on{border-color:var(--candle);box-shadow:0 0 40px rgba(232,120,42,.45);transform:translateY(-6px)}
+.opt:hover span,.opt.on span{transform:scale(1.25)}
+.resp{min-height:6.5em;margin-top:2.6rem;font-family:var(--folk);font-size:clamp(1.3rem,2.6vw,2rem);color:var(--candle);transition:opacity .5s,transform .5s}
+.resp.swap{opacity:0;transform:translateY(14px)}
+.resp small{display:block;font-family:var(--body);font-size:.9rem;color:var(--muted);margin-top:.6rem}
+.burst{position:fixed;pointer-events:none;z-index:150;font-size:1.6rem;animation:bst 1.4s ease-out forwards}
+@keyframes bst{to{transform:translate(var(--bx),var(--by)) rotate(var(--br));opacity:0}}
+footer{padding:50px 6vw 90px;text-align:center;background:#040208;color:var(--muted);font-size:.9rem}
+footer .logo{justify-content:center;margin-bottom:.8rem}
+
+/* =====================================================
+   20. RESPONSIVE
+   ===================================================== */
+@media (max-width:1100px){
+  .costumes{grid-template-columns:repeat(3,1fr)}.syms,.countries{grid-template-columns:repeat(2,1fr)}
+  .nav ul{gap:12px}.nav ul a{font-size:.66rem;letter-spacing:.14em}
+}
+@media (max-width:900px){
+  .burger{display:block;margin-left:auto}
+  .nav ul{position:fixed;top:0;right:0;bottom:0;width:min(78vw,320px);flex-direction:column;justify-content:center;gap:22px;padding:2rem;background:rgba(7,5,13,.97);transform:translateX(105%);visibility:hidden;transition:transform .5s,visibility 0s .5s;border-left:1px solid rgba(201,162,75,.3)}
+  .nav ul.open{transform:none;visibility:visible;transition:transform .5s,visibility 0s}
+  .nav ul a{font-size:1rem}
+  .nav .burger{position:relative;z-index:2}
+  .what-grid,.pk-grid,.tot,.shift,.compare{grid-template-columns:1fr}
+  .cols3,.days,.jp-grid,.dyk,.myths,.mchips{grid-template-columns:1fr}
+  .dyk .flipc,.myths .flipc{height:230px}
+  .costumes{grid-template-columns:repeat(2,1fr)}
+  .vt{grid-template-columns:1fr;gap:10px;margin-top:2rem}.vt::before{display:none}
+  .vt button{display:flex;align-items:center;gap:14px;text-align:left;padding:6px}.vt .nd{margin:0;flex:none}
+  .chain{grid-template-columns:1fr 1fr;gap:20px}.chain::before{display:none}
+  .evo::before{top:30px}.evo .ic{width:62px;height:62px;font-size:1.7rem}.evo button{font-size:.66rem}
+  .opts{grid-template-columns:repeat(2,1fr)}
+  .hero-pumpkin{width:25vw;left:2%}.hero-pumpkin.p2{display:none}
+  .veil-bar{display:none}
+  /* book becomes single page on narrow screens */
+  .book{grid-template-columns:1fr}.pg.left{display:none}
+  .leaf{left:10px;width:calc(100% - 20px)}.leaf.flip{transform:rotateY(-95deg);opacity:0;pointer-events:none}.leaf .b{display:none}
+  .book::before{display:none}
+}
+@media (max-width:520px){.syms,.countries{grid-template-columns:1fr 1fr}.sy p{font-size:.82rem}.costumes{grid-template-columns:1fr 1fr}.sound{bottom:10px;right:10px}}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+  .reveal,.ti,.epic div{opacity:1!important;transform:none!important;filter:none!important}
+  .hero h1 span,.hero .tagline,.hero .small,.hero .btn,.scroll-ind{opacity:1!important;filter:none!important;transform:none!important}
+  .route{stroke-dashoffset:0!important}.route2{opacity:1!important}.epic div{letter-spacing:.04em!important}
+}
+</style>
+</head>
+<body>
+<div id="cdot"></div><div id="cring"></div>
+<canvas id="fx" aria-hidden="true"></canvas>
+
+<!-- =====================================================
+     NAVIGATION
+     ===================================================== -->
+<header class="nav" id="nav">
+  <a class="logo" href="#home" aria-label="Halloween, back to top">🎃 HALLOWEEN</a>
+  <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button>
+  <nav aria-label="Main">
+    <ul id="menu">
+      <li><a href="#home" data-k="home">HOME</a></li>
+      <li><a href="#what" data-k="origins">ORIGINS</a></li>
+      <li><a href="#spirits" data-k="spirits">SPIRITS</a></li>
+      <li><a href="#costumes" data-k="costumes">COSTUMES</a></li>
+      <li><a href="#pumpkins" data-k="pumpkins">PUMPKINS</a></li>
+      <li><a href="#traditions" data-k="traditions">TRADITIONS</a></li>
+      <li><a href="#christianity" data-k="christianity">CHRISTIANITY</a></li>
+      <li><a href="#america" data-k="america">AMERICA</a></li>
+      <li><a href="#today" data-k="today">TODAY</a></li>
+    </ul>
+  </nav>
+</header>
+<button class="sound" id="sound" aria-pressed="false">SOUND OFF</button>
+
+<main>
+<!-- =====================================================
+     HERO
+     ===================================================== -->
+<section class="hero" id="home" data-nav="home" aria-label="Halloween: The Story Behind the Night">
+  <div class="stars" id="stars"></div>
+  <div class="layer" data-depth="10"><div class="moon"></div></div>
+  <div class="layer" data-depth="22">
+    <div class="bat" style="--y:18%;--s:24s;--dl:1s"><svg viewBox="0 0 40 20"><path d="M20 6 C16 0 6 0 0 8 C6 7 9 10 12 16 C15 12 17 12 20 17 C23 12 25 12 28 16 C31 10 34 7 40 8 C34 0 24 0 20 6Z"/></svg></div>
+    <div class="bat" style="--y:30%;--s:30s;--dl:9s;width:28px"><svg viewBox="0 0 40 20"><path d="M20 6 C16 0 6 0 0 8 C6 7 9 10 12 16 C15 12 17 12 20 17 C23 12 25 12 28 16 C31 10 34 7 40 8 C34 0 24 0 20 6Z"/></svg></div>
+    <div class="bat" style="--y:12%;--s:36s;--dl:16s;width:22px"><svg viewBox="0 0 40 20"><path d="M20 6 C16 0 6 0 0 8 C6 7 9 10 12 16 C15 12 17 12 20 17 C23 12 25 12 28 16 C31 10 34 7 40 8 C34 0 24 0 20 6Z"/></svg></div>
+  </div>
+  <div class="layer" data-depth="14"><svg class="trees" id="treesFar" viewBox="0 0 1600 400" preserveAspectRatio="none" aria-hidden="true"></svg></div>
+  <div class="fog"></div>
+  <div class="layer" data-depth="30"><svg class="trees" id="treesNear" viewBox="0 0 1600 400" preserveAspectRatio="none" style="height:36%" aria-hidden="true"></svg></div>
+  <div class="fog f2"></div>
+  <svg class="hero-pumpkin" viewBox="0 0 200 170" aria-hidden="true">
+    <defs><radialGradient id="pg" cx="50%" cy="40%" r="70%"><stop offset="0" stop-color="#ff9a3c"/><stop offset=".6" stop-color="#d4571a"/><stop offset="1" stop-color="#5e1a08"/></radialGradient></defs>
+    <path d="M100 38C60 20 8 40 8 100c0 50 47 65 92 65s92-15 92-65c0-60-52-80-92-62Z" fill="url(#pg)"/>
+    <path d="M100 38C70 60 62 130 100 165M100 38C130 60 138 130 100 165M100 38C45 55 30 135 100 165M100 38C155 55 170 135 100 165" stroke="#4a1506" stroke-width="2.5" fill="none" opacity=".45"/>
+    <path d="M92 42c-2-20 6-32 20-34l4 10c-8 2-10 12-8 24Z" fill="#3b4a1c"/>
+    <g class="gl" fill="#ffd27a" style="filter:drop-shadow(0 0 6px #ff8a2a)"><path d="M48 88l30 4-18-30ZM152 88l-30 4 18-30Z"/><path d="M52 118l22 14 14-10 12 12 12-12 14 10 22-14-6 22-42 12-42-12Z"/></g>
+  </svg>
+  <svg class="hero-pumpkin p2" viewBox="0 0 200 170" aria-hidden="true">
+    <path d="M100 38C60 20 8 40 8 100c0 50 47 65 92 65s92-15 92-65c0-60-52-80-92-62Z" fill="url(#pg)"/>
+    <path d="M92 42c-2-20 6-32 20-34l4 10c-8 2-10 12-8 24Z" fill="#3b4a1c"/>
+    <g class="gl" fill="#ffd27a"><circle cx="62" cy="88" r="14"/><circle cx="138" cy="88" r="14"/><path d="M60 122q40 34 80 0q-40 12-80 0Z"/></g>
+  </svg>
+  <div class="hero-copy">
+    <h1 aria-label="HALLOWEEN" id="heroTitle"></h1>
+    <div class="tagline">The Story Behind the Night</div>
+    <p class="small">From ancient Celtic traditions to a worldwide cultural phenomenon</p>
+    <a class="btn" href="#what" id="enter">ENTER THE STORY ↓</a>
+  </div>
+  <div class="scroll-ind">SCROLL TO DISCOVER</div>
+</section>
+
+<!-- =====================================================
+     WHAT IS HALLOWEEN
+     ===================================================== -->
+<section class="sec" id="what" data-nav="origins" aria-labelledby="whatT">
+  <div class="wrap">
+    <div class="what-grid">
+      <div class="reveal">
+        <span class="sub">THE QUESTION</span>
+        <h2 class="title" id="whatT">WHAT IS HALLOWEEN?</h2>
+        <p class="lede">Halloween is celebrated mainly on <strong>October 31</strong>. Today, many people connect it with costumes, candy, pumpkins, parties, decorations, and spooky stories.</p>
+        <p class="lede">But the history of Halloween is much older, and much more complicated, than a night of candy. It grew over many centuries from different traditions in different places.</p>
+        <div class="chips" aria-label="Things connected with Halloween"><span class="tag">🎭 Costumes</span><span class="tag">🍬 Candy</span><span class="tag">🎃 Pumpkins</span><span class="tag">🎉 Parties</span><span class="tag">🕯️ Decorations</span><span class="tag">👻 Supernatural themes</span></div>
+      </div>
+      <div class="reveal" style="--d:.2s">
+        <div class="cal" id="cal" tabindex="0" role="button" aria-label="October 31. Tap to reveal its meaning.">
+          <div class="top">OCTOBER</div>
+          <div class="num">31</div>
+          <div class="hint">HOVER OR TAP</div>
+          <div class="rev">The evening before<br>All Saints' Day</div>
+        </div>
+      </div>
+    </div>
+    <div class="morph reveal">
+      <span class="sub">WHERE THE NAME COMES FROM</span>
+      <div class="word" id="word" aria-live="polite">All Hallows' Eve</div>
+      <p class="cap" id="wordCap"></p>
+      <div class="dots" id="wordDots"><i></i><i></i><i></i><i></i></div>
+      <button class="btn small" id="wordBtn">REPLAY THE WORD</button>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================
+     SAMHAIN
+     ===================================================== -->
+<section class="sec" id="origins" data-nav="origins" aria-labelledby="orgT">
+  <div class="wrap">
+    <span class="sub reveal">ANCIENT ROOTS</span>
+    <h2 class="title reveal" id="orgT">WHERE DID HALLOWEEN BEGIN?</h2>
+    <p class="lede reveal">Halloween has roots in the ancient Celtic festival of <strong>Samhain</strong> (said roughly like "SOW-in"). Samhain was linked to the end of the harvest and the move toward winter. It was especially important in Celtic-speaking regions such as Ireland and Scotland.</p>
+    <p class="lede reveal">People believed this time of year had a special connection with supernatural forces. Move the slider to travel from harvest, through Samhain, into winter.</p>
+
+    <div class="scene reveal" id="scene">
+      <svg viewBox="0 0 1000 420" role="img" aria-label="Animated landscape changing from harvest to Samhain to winter">
+        <defs>
+          <linearGradient id="skyG" x1="0" y1="0" x2="0" y2="1"><stop id="skyT" offset="0" stop-color="#ffb05c"/><stop id="skyB" offset="1" stop-color="#ffe2a0"/></linearGradient>
+          <radialGradient id="fireG"><stop offset="0" stop-color="#ffd27a" stop-opacity=".9"/><stop offset="1" stop-color="#ff7a1c" stop-opacity="0"/></radialGradient>
+        </defs>
+        <rect width="1000" height="420" fill="url(#skyG)"/>
+        <g id="sunG"><circle cx="760" cy="120" r="46" fill="#fff1b0"/><circle cx="760" cy="120" r="80" fill="#fff1b0" opacity=".25"/></g>
+        <g id="moonG" opacity="0"><circle cx="800" cy="90" r="38" fill="#fbefc8"/><circle cx="800" cy="90" r="70" fill="#fbefc8" opacity=".15"/></g>
+        <g id="starsG" opacity="0"></g>
+        <path id="ground" d="M0 300 C200 270 330 310 520 285 C700 262 850 300 1000 280 L1000 420 L0 420Z" fill="#78561e"/>
+        <g id="wheat"></g>
+        <g id="treeG"><rect x="130" y="170" width="16" height="140" fill="#1a0e08"/><path d="M138 200 L90 140M138 215 L190 150M138 180 L120 120M138 190 L170 120" stroke="#1a0e08" stroke-width="7" fill="none" stroke-linecap="round"/><g id="canopy" fill="#de9628"><circle cx="138" cy="130" r="58"/><circle cx="92" cy="156" r="38"/><circle cx="188" cy="156" r="40"/></g></g>
+        <g id="fireG2" opacity="0"><circle cx="520" cy="260" r="110" fill="url(#fireG)"/><path d="M490 300 L520 210 L550 300Z" fill="#c8501a" class="fl"/><path d="M500 300 L522 232 L545 300Z" fill="#ff9a3c" class="fl" style="animation-delay:.2s"/><path d="M510 300 L522 255 L535 300Z" fill="#ffe08a" class="fl" style="animation-delay:.4s"/><path d="M480 304h80" stroke="#2a1206" stroke-width="8" stroke-linecap="round"/>
+          <g fill="#0a0510"><circle cx="440" cy="288" r="9"/><path d="M430 320 q10-34 20 0Z"/><circle cx="610" cy="286" r="9"/><path d="M600 320 q10-34 20 0Z"/><circle cx="560" cy="306" r="8"/><path d="M552 332 q8-30 16 0Z"/></g></g>
+        <g id="snow" opacity="0"></g>
+      </svg>
+      <style>.fl{transform-origin:50% 100%;transform-box:fill-box;animation:fk .5s ease-in-out infinite alternate}@keyframes fk{to{transform:scale(.9,1.12) skewX(4deg)}}</style>
+      <div class="scene-ui">
+        <div class="stage-btns" id="stageBtns"><button data-s="0" class="on">HARVEST</button><button data-s="1">SAMHAIN</button><button data-s="2">WINTER</button></div>
+        <input type="range" id="season" min="0" max="2" step="0.01" value="0" aria-label="Season: harvest to winter">
+      </div>
+      <p class="scene-cap" id="sceneCap"></p>
+    </div>
+
+    <div class="more reveal" id="more">
+      <button class="btn" id="moreBtn" aria-expanded="false" aria-controls="morePanel">LEARN MORE ABOUT SAMHAIN</button>
+      <div class="more-panel" id="morePanel">
+        <div class="parch">
+          <h3 style="font-size:1.6rem;text-align:center;margin-bottom:1.4rem">Samhain: What We Know, What People Believed, What Is Debated</h3>
+          <div class="cols3">
+            <div><h3>📜 What the sources say</h3><ul><li>Samhain appears in early Irish literature written in the medieval period.</li><li>It is described as a major gathering and feast at the start of the dark half of the year.</li><li>Similar autumn festivals are recorded in Scotland, the Isle of Man, and Wales.</li></ul></div>
+            <div><h3>🔥 What people believed</h3><ul><li>According to folklore, the time between harvest and winter was a time of change.</li><li>People believed that spirits and beings from the "Otherworld" could be closer than usual.</li><li>Bonfires and feasts were part of later customs in many places.</li></ul></div>
+            <div><h3>❓ What is debated</h3><ul><li>Many written sources were recorded centuries later, often by Christian writers.</li><li>Historians still discuss how much of the later folklore matches ancient practice.</li><li>This is why we say Halloween has <em>roots</em> in Samhain, not that it simply <em>is</em> Samhain.</li></ul></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================
+     THE VEIL
+     ===================================================== -->
+<section class="veil" id="spirits" data-nav="spirits" aria-labelledby="veilT">
+  <div class="veil-intro">
+    <span class="sub">FOLKLORE</span>
+    <h2 class="title" id="veilT">WHEN THE WORLDS WERE CLOSE</h2>
+    <p class="lede center">In traditional folk belief, around Samhain the boundary between the living world and the supernatural world was thought to become less clear. People believed spirits and other beings could appear. These are beliefs from folklore, not proven facts. Scroll slowly and watch the boundary change.</p>
+  </div>
+  <div class="veil-track" id="veilTrack">
+    <div class="veil-stage" id="veilStage">
+      <div class="world living">
+        <svg class="village" viewBox="0 0 1000 300" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+          <g fill="#0a0612"><path d="M40 300V200L100 150L160 200V300Z"/><path d="M220 300V170L290 110L360 170V300Z"/><path d="M430 300V210L490 165L550 210V300Z"/><path d="M620 300V180L690 120L760 180V300Z"/><path d="M830 300V200L890 155L950 200V300Z"/></g>
+          <g fill="#ffcf72" style="filter:drop-shadow(0 0 8px #ffb43c)"><rect x="90" y="220" width="20" height="26"/><rect x="265" y="200" width="22" height="30"/><rect x="315" y="200" width="22" height="30"/><rect x="470" y="230" width="20" height="26"/><rect x="665" y="210" width="22" height="30"/><rect x="715" y="210" width="22" height="30"/><rect x="870" y="225" width="20" height="26"/></g>
+        </svg>
+        <h3>THE LIVING WORLD</h3>
+      </div>
+      <div class="band" id="band"></div>
+      <div class="world spirit">
+        <h3>THE SPIRIT WORLD</h3>
+        <span class="orb" style="--x:12%;--y:40%;--w:14px"></span><span class="orb" style="--x:30%;--y:70%;--w:10px;--dl:2s"></span><span class="orb" style="--x:55%;--y:30%;--w:18px;--dl:1s"></span><span class="orb" style="--x:72%;--y:62%;--w:12px;--dl:3s"></span><span class="orb" style="--x:88%;--y:36%;--w:16px;--dl:4s"></span>
+        <span class="gh" style="--x:18%;--y:30%;--d:320">👻</span><span class="gh" style="--x:44%;--y:55%;--d:420">👻</span><span class="gh" style="--x:68%;--y:25%;--d:300">👻</span><span class="gh" style="--x:82%;--y:60%;--d:400">👻</span>
+      </div>
+      <div class="veil-cap" id="veilCap">
+        <p class="on">The boundary is thick. The living world and the spirit world are clearly apart.</p>
+        <p>As Samhain comes closer, people believed the boundary grew thin.</p>
+        <p>People believed spirits could now cross. This is how folklore explained the strange, dark time of year.</p>
+      </div>
+      <div class="veil-bar" aria-hidden="true"><i></i></div>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================
+     COSTUMES
+     ===================================================== -->
+<section class="sec" id="costumes" data-nav="costumes" aria-labelledby="cosT">
+  <div class="wrap">
+    <span class="sub reveal">DISGUISES</span>
+    <h2 class="title reveal" id="cosT">WHY DO WE WEAR COSTUMES?</h2>
+    <p class="lede reveal">Some folklorists connect Halloween costumes with older traditions of disguising yourself. In some places, people believed that wearing a disguise could help them avoid, or blend in with, spirits that might be wandering. Later, in Ireland and Scotland, people also went from house to house in disguise, a custom often called <em>guising</em>. Historians still discuss how these customs are connected.</p>
+    <div class="evo reveal" id="evo">
+      <button class="on" data-i="0"><span class="ic">🎭</span>DISGUISE</button>
+      <button data-i="1"><span class="ic">👹</span>MASKS &amp; COSTUMES</button>
+      <button data-i="2"><span class="ic">🧛</span>MODERN COSTUMES</button>
+    </div>
+    <div class="evo-panel" id="evoPanel" aria-live="polite"></div>
+    <p class="lede center reveal" style="margin-top:3rem">Today, costumes are mostly about entertainment, creativity, and self-expression. Hover over a character to see how it came to Halloween.</p>
+    <div class="grid costumes">
+      <div class="cc witch reveal" tabindex="0"><span class="em">🧙</span><h3>WITCH</h3><p>Linked to old European folk beliefs and stories about magic. Today she is a playful classic.</p></div>
+      <div class="cc ghost reveal" tabindex="0" style="--d:.08s"><span class="em">👻</span><h3>GHOST</h3><p>A symbol of the spirits people once believed could return around this time of year.</p></div>
+      <div class="cc vamp reveal" tabindex="0" style="--d:.16s"><span class="em">🧛</span><h3>VAMPIRE</h3><p>A figure from European folklore and 19th-century stories, now a popular costume.</p></div>
+      <div class="cc skel reveal" tabindex="0" style="--d:.24s"><span class="em">💀</span><h3>SKELETON</h3><p>A reminder of death and the dead, themes that run through autumn traditions.</p></div>
+      <div class="cc mon reveal" tabindex="0" style="--d:.32s"><span class="em">👹</span><h3>MONSTER</h3><p>Monsters let people play with fear in a safe and creative way.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================
+     PUMPKINS
+     ===================================================== -->
+<section class="sec" id="pumpkins" data-nav="pumpkins" aria-labelledby="pkT">
+  <div class="wrap">
+    <span class="sub reveal">JACK-O'-LANTERNS</span>
+    <h2 class="title reveal" id="pkT">FROM TURNIPS TO PUMPKINS</h2>
+    <p class="lede reveal">Jack-o'-lantern traditions are connected to older European customs of carving vegetables. Originally, people in Ireland and Scotland carved <strong>turnips</strong> and other root vegetables. After the tradition became popular in America, <strong>pumpkins</strong> became common because they were larger and easier to carve.</p>
+    <div class="pk-grid">
+      <div class="pk-stage reveal" id="pkStage">
+        <div class="halo"></div>
+        <svg viewBox="0 0 400 400" id="pkSvg" role="button" tabindex="0" aria-label="Lantern. Press to turn the light on or off." aria-pressed="false">
+          <defs><radialGradient id="vegG" cx="45%" cy="35%" r="75%"><stop id="vg1" offset="0" stop-color="#b08ac0"/><stop id="vg2" offset="1" stop-color="#efe6d6"/></radialGradient></defs>
+          <g id="tuft" opacity="1"><path d="M200 112 C170 70 140 60 130 40 C160 50 190 70 200 112Z M200 112 C220 60 250 45 270 40 C255 70 225 85 200 112Z" fill="#4f7a34"/></g>
+          <g id="tail"><path d="M194 338 C192 372 200 384 206 384 C206 372 208 356 206 338Z" fill="#cdb9a0"/></g>
+          <g id="stem" opacity="0"><path d="M190 108 C186 76 198 58 220 52 L228 74 C214 80 212 94 214 108Z" fill="#3b4a1c"/></g>
+          <path id="veg" d="" fill="url(#vegG)" stroke="rgba(0,0,0,.35)" stroke-width="2"/>
+          <g id="ridges" opacity="0" fill="none" stroke="#5a1c06" stroke-width="3"><path d="M200 100C150 140 150 290 200 330M200 100C250 140 250 290 200 330M200 100C110 130 100 290 200 330M200 100C290 130 300 290 200 330" opacity=".4"/></g>
+          <g class="face"><path d="M146 200 L182 200 L164 166Z M218 200 L254 200 L236 166Z"/><path d="M140 236 L164 262 L184 246 L200 270 L216 246 L236 262 L260 236 L240 288 L200 300 L160 288Z"/></g>
+        </svg>
+      </div>
+      <div class="reveal" style="--d:.15s">
+        <div class="pk-label" id="pkLabel">TURNIP</div>
+        <p id="pkText" style="margin-top:.4rem;min-height:5.5em"></p>
+        <div class="pk-ui">
+          <button class="btn small" id="pkMorph">TRANSFORM ▸ PUMPKIN</button>
+          <input type="range" id="pkRange" min="0" max="1" step="0.01" value="0" aria-label="Turnip to pumpkin">
+        </div>
+        <p class="hintp">Click the vegetable to light the lantern. 🕯️</p>
+        <div class="steps2">
+          <div><b>Why turnips first?</b>In Ireland and Scotland, turnips and similar root vegetables were common and available in autumn.</div>
+          <div><b>Why pumpkins later?</b>Pumpkins were widely grown in North America. They are bigger and have softer flesh, so they are easier to carve.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================
+     STINGY JACK BOOK
+     ===================================================== -->
+<section class="sec" id="jack" data-nav="pumpkins" aria-labelledby="jackT">
+  <div class="wrap center">
+    <span class="sub reveal">IRISH FOLKLORE</span>
+    <h2 class="title reveal" id="jackT">WHO IS JACK?</h2>
+    <p class="lede reveal">The name "jack-o'-lantern" is connected to an old Irish folktale. There are many versions. Here is a simple one. Turn the pages.</p>
+    <div class="book-wrap reveal"><div class="book" id="book"><div class="pg left" id="bookLeft"><div class="cover"><div class="big">📖</div><h3>The Tale of Stingy Jack</h3><p class="cap">An old Irish folktale, retold for today</p></div></div><div class="pg" id="bookRight"><div class="cover"><div class="big">🎃</div><h3>The End</h3><p class="cap">Folktales have many versions. This is one of them.</p></div></div></div></div>
+    <div class="book-ui"><button class="btn small" id="prevPg" disabled>◂ BACK</button><span id="pgNo">COVER</span><button class="btn small" id="nextPg">TURN PAGE ▸</button></div>
+  </div>
+</section>
+
+<!-- =====================================================
+     TRICK OR TREAT
+     ===================================================== -->
+<section class="sec" id="traditions" data-nav="traditions" aria-labelledby="totT">
+  <div class="wrap">
+    <span class="sub reveal">DOOR TO DOOR</span>
+    <h2 class="title reveal" id="totT">WHY DO WE SAY "TRICK OR TREAT"?</h2>
+    <p class="lede reveal">Modern trick-or-treating developed from older European traditions in which people visited homes and received food or treats. The modern form became especially popular in North America during the 20th century.</p>
+    <div class="tot">
+      <div class="street reveal">
+        <div class="m"></div><div class="ground"></div>
+        <div class="house"><div class="roof"></div><div class="body"></div><div class="win" style="bottom:auto"></div><div class="win win2"></div>
+          <div class="door-frame"><div class="door" id="door"></div></div></div>
+        <div class="kid">🧙‍♀️</div>
+        <div class="bubble" id="bubble">TRICK OR TREAT!</div>
+      </div>
+      <div class="reveal" style="--d:.15s">
+        <button class="btn" id="knock">🚪 KNOCK</button>
+        <div class="bag">CANDY COLLECTED <b id="candyN">0</b></div>
+        <div class="tot-list">
+          <div><b>Souling.</b> In medieval and later England, people went door to door around All Souls' Day asking for "soul cakes" and promising prayers for the dead.</div>
+          <div><b>Guising.</b> In Scotland and Ireland, people in disguise visited houses, often performing a song, joke, or poem in return for food.</div>
+          <div><b>North America.</b> In the 1920s and 1930s, "trick or treat" appears in print. At first the "trick" meant pranks. Later it became a friendly ritual for children, especially after the 1950s.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================
+     CHRISTIANITY
+     ===================================================== -->
+<section class="sec" id="christianity" data-nav="christianity" aria-labelledby="chrT">
+  <div class="wrap">
+    <span class="sub reveal">FAITH &amp; FOLK CUSTOM</span>
+    <h2 class="title reveal" id="chrT">HALLOWEEN &amp; CHRISTIANITY</h2>
+    <p class="lede reveal">The word "Halloween" comes from <em>All Hallows' Eve</em>. "Hallows" is an old word for saints. Halloween is <strong>not</strong> simply "from Christianity" or "from the Celts." Its history is a combination of older European customs and Christian traditions that mixed over many centuries.</p>
+    <div class="grid days">
+      <div class="day reveal"><div class="d">OCT 31</div><h3>All Hallows' Eve</h3><p>The evening before All Saints' Day. In Christian tradition, the eve of a feast was a time of preparation and prayer.</p></div>
+      <div class="day reveal" style="--d:.12s"><div class="d">NOV 1</div><h3>All Saints' Day</h3><p>A feast to honor all the saints. Church tradition moved it to November 1 in the 8th and 9th centuries, though historians discuss the exact details.</p></div>
+      <div class="day reveal" style="--d:.24s"><div class="d">NOV 2</div><h3>All Souls' Day</h3><p>A day to remember and pray for the dead. It became widely observed from about the year 1000.</p></div>
+    </div>
+    <div class="chain reveal" id="chain">
+      <button class="on" data-i="0"><i></i>ANCIENT CELTIC<br>TRADITIONS</button>
+      <button data-i="1"><i></i>CHRISTIAN<br>TRADITIONS</button>
+      <button data-i="2"><i></i>EUROPEAN<br>FOLK CUSTOMS</button>
+      <button data-i="3"><i></i>MODERN<br>HALLOWEEN</button>
+    </div>
+    <div class="chain-panel" id="chainPanel" aria-live="polite"></div>
+    <div class="warn reveal"><strong>Careful history.</strong> Scholars still debate how directly Samhain and the Christian feasts are linked. Some see a strong link, others see a gradual mixing of customs. The honest answer: Halloween is a blend, shaped by many cultures and beliefs.</div>
+  </div>
+</section>
+
+<!-- =====================================================
+     AMERICA
+     ===================================================== -->
+<section class="sec" id="america" data-nav="america" aria-labelledby="amT">
+  <div class="wrap">
+    <span class="sub reveal">ACROSS THE ATLANTIC</span>
+    <h2 class="title reveal" id="amT">FROM EUROPE TO AMERICA</h2>
+    <p class="lede reveal">Immigration helped carry Halloween-related customs to North America. In the 1800s, especially after the Great Famine in Ireland began in 1845, large numbers of Irish people moved to the United States and Canada, along with many Scots. They brought songs, games, stories, and autumn customs with them. In the new land, these traditions mixed with other cultures and slowly changed.</p>
+    <div class="map reveal" id="map">
+      <svg viewBox="0 0 1000 440" role="img" aria-label="Stylized map showing a glowing route from Ireland and Scotland across the Atlantic to North America">
+        <path class="land" d="M40 70L120 44 230 54 300 42 360 86 400 134 424 196 394 244 372 292 332 322 300 364 260 334 204 302 150 232 100 182 60 124Z"/>
+        <path class="land" d="M470 34L560 30 586 82 534 134 492 94Z"/>
+        <path class="land" d="M776 120L808 142 800 202 822 252 782 272 750 242 760 192 744 152Z"/>
+        <path class="land" d="M698 192L734 186 740 226 710 242 694 216Z"/>
+        <path class="land" d="M840 150L940 132 992 182 992 332 902 382 832 332 852 262 838 216Z"/>
+        <path class="route" pathLength="1" d="M706 214 C620 110 480 110 396 176"/>
+        <path class="route2" d="M396 176 C360 190 330 200 290 210M396 176 C340 150 290 150 230 170M396 176 C350 230 310 260 280 300M290 210 C220 200 170 170 120 150"/>
+        <circle class="pt pulse" cx="716" cy="212" r="9"/><circle class="pt pulse" cx="396" cy="176" r="9"/>
+        <circle class="pt" cx="290" cy="210" r="5"/><circle class="pt" cx="230" cy="170" r="5"/><circle class="pt" cx="280" cy="300" r="5"/><circle class="pt" cx="120" cy="150" r="5"/>
+        <text x="660" y="262">IRELAND &amp; SCOTLAND</text><text x="130" y="110">NORTH AMERICA</text><text x="505" y="400" style="font-size:12px;opacity:.7">ATLANTIC OCEAN · stylized map, not to scale</text>
+      </svg>
+    </div>
+    <div class="mchips">
+      <div class="reveal"><b>1. Irish &amp; Scottish customs</b>Bonfires, games, guising, divination games, and folk stories were part of autumn gatherings.</div>
+      <div class="reveal" style="--d:.1s"><b>2. New traditions in America</b>In some early colonies, Halloween was not widely celebrated. It spread more in the 1800s, mixing harvest festivals, ghost stories, and community parties.</div>
+      <div class="reveal" style="--d:.2s"><b>3. Modern Halloween</b>American popular culture shaped Halloween into a mostly fun, community-based holiday and spread it around the world.</div>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================
+     POPULAR CULTURE
+     ===================================================== -->
+<section class="sec" id="popculture" data-nav="america" aria-labelledby="pcT">
+  <div class="wrap">
+    <span class="sub reveal">A NEW KIND OF NIGHT</span>
+    <h2 class="title reveal" id="pcT">HALLOWEEN BECOMES POPULAR CULTURE</h2>
+    <p class="lede reveal">Over time, Halloween became less about supernatural belief and more about community, children, costumes, candy, parties, entertainment, and decorations. Modern Halloween was strongly shaped by American popular culture. Click each stage.</p>
+    <div class="vt reveal" id="vt">
+      <button class="on" data-i="0"><span class="nd">🔥</span>ANCIENT<br>TRADITIONS</button>
+      <button data-i="1"><span class="nd">🏰</span>MEDIEVAL<br>EUROPE</button>
+      <button data-i="2"><span class="nd">🚢</span>IMMIGRATION</button>
+      <button data-i="3"><span class="nd">🎬</span>20TH<br>CENTURY</button>
+      <button data-i="4"><span class="nd">🌍</span>MODERN<br>HALLOWEEN</button>
+    </div>
+    <div class="vt-panel" id="vtPanel" aria-live="polite"></div>
+    <div class="shift reveal">
+      <div><h3>THEN: A NIGHT OF BELIEF</h3><ul><li>Seasonal change and the harvest</li><li>Remembering the dead</li><li>Protection from spirits</li><li>Folk rituals and divination games</li></ul></div>
+      <div><h3>NOW: A NIGHT OF FUN</h3><ul><li>Costumes and creativity</li><li>Candy and parties</li><li>Community events for children</li><li>Movies, TV, shops, and social media</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================
+     TODAY
+     ===================================================== -->
+<section class="sec" id="today" data-nav="today" aria-labelledby="tdT">
+  <div class="wrap">
+    <span class="sub reveal">A GLOBAL NIGHT</span>
+    <h2 class="title reveal" id="tdT">HALLOWEEN TODAY</h2>
+    <p class="lede reveal">Halloween is now celebrated in many parts of the world. Each place celebrates it in its own way. Tap a card to flip it.</p>
+    <div class="grid countries" id="countries"></div>
+    <p class="note reveal">Note: In Mexico, Día de Muertos (Day of the Dead) takes place around the same dates, but it is a separate tradition with its own history and meaning.</p>
+  </div>
+</section>
+
+<section class="sec" id="japan" data-nav="today" aria-labelledby="jpT">
+  <div class="wrap">
+    <span class="sub reveal">OUR OWN HALLOWEEN</span>
+    <h2 class="title reveal" id="jpT">HALLOWEEN IN JAPAN</h2>
+    <p class="lede reveal">Halloween in Japan developed differently from its European origins. It is often more about costumes and entertainment than about the original seasonal or religious meaning. This is one example of cultural adaptation: a tradition travels, and each society shapes it in its own way.</p>
+    <div class="jp-grid">
+      <div class="jp reveal"><div class="e">🎭</div><h3>COSTUME EVENTS</h3><p>Costume parades and parties are central. The Kawasaki Halloween Parade, started in the 1990s, is one well-known example.</p></div>
+      <div class="jp reveal" style="--d:.1s"><div class="e">🎢</div><h3>THEME PARKS</h3><p>Large theme parks run special seasonal shows, decorations, and limited foods every autumn.</p></div>
+      <div class="jp reveal" style="--d:.2s"><div class="e">🛍️</div><h3>SHOPPING &amp; SEASONAL GOODS</h3><p>Shops, cafés, and stores sell Halloween-themed sweets, decorations, and costumes for weeks before October 31.</p></div>
+      <div class="jp reveal"><div class="e">📱</div><h3>SOCIAL MEDIA</h3><p>Photos of costumes and decorations spread quickly online, making creativity and sharing a big part of the fun.</p></div>
+      <div class="jp reveal" style="--d:.1s"><div class="e">🏙️</div><h3>CITY GATHERINGS</h3><p>Popular areas such as Shibuya draw big crowds. In recent years, local governments have asked visitors to follow rules for safety and consideration.</p></div>
+      <div class="jp reveal" style="--d:.2s"><div class="e">🏮</div><h3>A CULTURAL ECHO</h3><p>Japan has its own tradition of remembering ancestors: Obon, in summer. It is a different festival, but it shows that many cultures connect seasons with memory.</p></div>
+    </div>
+    <div class="compare reveal">
+      <div><h3>HISTORICAL HALLOWEEN</h3><p>Seasonal change, folklore, religious feasts, remembering the dead, and community customs.</p></div>
+      <div><h3>HALLOWEEN IN JAPAN</h3><p>Costumes, events, themed entertainment, shopping, and sharing with friends. Both are real parts of how Halloween lives today.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================
+     SYMBOLS
+     ===================================================== -->
+<section class="sec" id="symbols" data-nav="today" aria-labelledby="syT">
+  <div class="wrap center">
+    <span class="sub reveal">THE GALLERY</span>
+    <h2 class="title reveal" id="syT">THE SYMBOLS OF HALLOWEEN</h2>
+    <p class="lede reveal">Eight symbols, eight stories. Click any card to open it.</p>
+    <div class="grid syms" id="syms"></div>
+  </div>
+</section>
+<dialog id="symDlg" aria-labelledby="symName"><div class="dlg"><button class="x" id="symX" aria-label="Close">✕</button><span class="i" id="symI"></span><h3 id="symName"></h3><div id="symBody"></div></div></dialog>
+
+<!-- =====================================================
+     TIMELINE
+     ===================================================== -->
+<section class="sec" id="journey" data-nav="today" aria-labelledby="jyT">
+  <div class="wrap">
+    <span class="sub reveal">THE WHOLE STORY</span>
+    <h2 class="title reveal" id="jyT">A JOURNEY THROUGH TIME</h2>
+    <div class="tl-ui reveal"><button class="btn small" id="tlPrev" aria-label="Previous">◂</button><div class="tl-prog"><i id="tlProg"></i></div><button class="btn small" id="tlNext" aria-label="Next">▸</button></div>
+  </div>
+  <div class="tl" id="tl" tabindex="0" aria-label="Horizontal timeline. Scroll sideways."><div class="tl-track" id="tlTrack"></div></div>
+</section>
+
+<!-- =====================================================
+     DID YOU KNOW
+     ===================================================== -->
+<section class="sec" id="trivia" data-nav="today" aria-labelledby="dkT">
+  <div class="wrap center">
+    <span class="sub reveal">CURIOUS FACTS</span>
+    <h2 class="title reveal" id="dkT">DID YOU KNOW?</h2>
+    <p class="lede reveal">Click a card to flip it.</p>
+    <div class="grid dyk" id="dyk"></div>
+  </div>
+</section>
+
+<!-- =====================================================
+     MYTH OR FACT
+     ===================================================== -->
+<section class="sec" id="myth" data-nav="today" aria-labelledby="mfT">
+  <div class="wrap center">
+    <span class="sub reveal">TEST YOURSELF</span>
+    <h2 class="title reveal" id="mfT">MYTH OR FACT?</h2>
+    <p class="lede reveal">Think before you click! Is the statement true or false?</p>
+    <div class="grid myths" id="myths"></div>
+    <div class="score" id="score" aria-live="polite">REVEALED: 0 / 6</div>
+  </div>
+</section>
+
+<!-- =====================================================
+     BIG IDEA
+     ===================================================== -->
+<section class="sec" id="bigidea" data-nav="today" aria-labelledby="bigT">
+  <div class="wrap">
+    <h2 class="title reveal" id="bigT">HALLOWEEN IS MORE THAN COSTUMES AND CANDY.</h2>
+    <p class="lede center reveal">Halloween is the result of centuries of cultural change. It connects all of these:</p>
+    <div class="conn reveal"><span class="tag">ANCIENT TRADITIONS</span><span class="tag">SEASONAL FESTIVALS</span><span class="tag">FOLKLORE</span><span class="tag">RELIGION</span><span class="tag">IMMIGRATION</span><span class="tag">POPULAR CULTURE</span></div>
+    <div class="counters reveal">
+      <div><b data-count="3">0</b><span>days of remembrance: Oct 31, Nov 1, Nov 2</span></div>
+      <div><b data-count="1845">0</b><span>year the Great Famine in Ireland began, driving mass emigration</span></div>
+      <div><b data-count="1927">0</b><span>year of one of the earliest known "trick or treat" mentions in print</span></div>
+    </div>
+    <div class="epic" id="epic"><div>ONE NIGHT.</div><div>CENTURIES OF HISTORY.</div></div>
+  </div>
+</section>
+
+<!-- =====================================================
+     FINAL
+     ===================================================== -->
+<section class="sec" id="meaning" data-nav="today" aria-labelledby="mnT">
+  <div class="wrap">
+    <h2 class="title reveal" id="mnT">WHAT DOES HALLOWEEN MEAN TO YOU?</h2>
+    <p class="lede reveal">Choose one.</p>
+    <div class="opts" id="opts"></div>
+    <div class="resp" id="resp" aria-live="polite"></div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="logo">🎃 HALLOWEEN</div>
+  <p>The Story Behind the Night · An exhibition for the school cultural festival</p>
+  <p style="margin-top:.5rem;font-size:.82rem">Historians and folklorists continue to discuss many details of Halloween's origins. This exhibition gives a simplified overview.</p>
+</footer>
+
+<script>
+/* =====================================================
+   JS 0. HELPERS
+   ===================================================== */
+const $ = (s, c = document) => c.querySelector(s);
+const $$ = (s, c = document) => Array.from(c.querySelectorAll(s));
+const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const fine = matchMedia('(pointer: fine)').matches;
+const rand = (a, b) => a + Math.random() * (b - a);
+
+/* =====================================================
+   JS 1. SOUND (off by default, subtle)
+   ===================================================== */
+let actx = null, master = null, soundOn = false, drone = [];
+function initAudio() {
+  if (actx) return;
+  const AC = window.AudioContext || window.webkitAudioContext;
+  if (!AC) return;
+  actx = new AC();
+  master = actx.createGain(); master.gain.value = 0; master.connect(actx.destination);
+  const lp = actx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 420; lp.connect(master);
+  [55, 82.4, 110.3, 164.8].forEach((f, i) => {
+    const o = actx.createOscillator(), g = actx.createGain();
+    o.type = i % 2 ? 'sine' : 'triangle'; o.frequency.value = f; g.gain.value = i < 2 ? .5 : .16;
+    const l = actx.createOscillator(), lg = actx.createGain(); l.frequency.value = .05 + i * .03; lg.gain.value = 1.2;
+    l.connect(lg); lg.connect(o.detune); l.start(); o.connect(g); g.connect(lp); o.start(); drone.push(o, l);
+  });
+}
+function tone(freq, dur, type = 'sine', vol = .12) {
+  if (!soundOn || !actx) return;
+  const o = actx.createOscillator(), g = actx.createGain(), t = actx.currentTime;
+  o.type = type; o.frequency.setValueAtTime(freq, t); o.frequency.exponentialRampToValueAtTime(freq * .5, t + dur);
+  g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(.0001, t + dur);
+  o.connect(g); g.connect(actx.destination); o.start(t); o.stop(t + dur + .02);
+}
+const knockSnd = () => [0, .18, .36].forEach(d => setTimeout(() => tone(140, .14, 'triangle', .3), d * 1000));
+const chime = () => tone(880, .6, 'sine', .07);
+const soundBtn = $('#sound');
+soundBtn.addEventListener('click', () => {
+  soundOn = !soundOn;
+  if (soundOn) { initAudio(); if (actx && actx.state === 'suspended') actx.resume(); if (master) master.gain.linearRampToValueAtTime(.06, actx.currentTime + 2); chime(); }
+  else if (master) master.gain.linearRampToValueAtTime(0, actx.currentTime + .6);
+  soundBtn.setAttribute('aria-pressed', soundOn);
+  soundBtn.textContent = soundOn ? 'SOUND ON' : 'SOUND OFF';
+});
+
+/* =====================================================
+   JS 2. NAVIGATION
+   ===================================================== */
+const nav = $('#nav'), burger = $('#burger'), menu = $('#menu');
+addEventListener('scroll', () => nav.classList.toggle('small', scrollY > 60), { passive: true });
+burger.addEventListener('click', () => {
+  const o = menu.classList.toggle('open'); burger.setAttribute('aria-expanded', o);
+});
+$$('#menu a').forEach(a => a.addEventListener('click', () => { menu.classList.remove('open'); burger.setAttribute('aria-expanded', 'false'); }));
+$('#enter').addEventListener('click', e => { e.preventDefault(); $('#what').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' }); });
+// scroll-spy
+const links = $$('#menu a');
+const spy = new IntersectionObserver(es => {
+  es.forEach(e => {
+    if (e.isIntersecting) {
+      const k = e.target.dataset.nav;
+      links.forEach(l => l.classList.toggle('active', l.dataset.k === k));
+    }
+  });
+}, { rootMargin: '-45% 0px -50% 0px' });
+$$('[data-nav]').forEach(s => spy.observe(s));
+
+/* =====================================================
+   JS 3. REVEAL + COUNTERS
+   ===================================================== */
+const rev = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting) { e.target.classList.add('in'); rev.unobserve(e.target); }
+}), { threshold: .12 });
+$$('.reveal').forEach(el => rev.observe(el));
+const counted = new IntersectionObserver(es => es.forEach(e => {
+  if (!e.isIntersecting) return;
+  counted.unobserve(e.target);
+  $$('[data-count]', e.target).forEach(b => {
+    const end = +b.dataset.count, t0 = performance.now(), dur = reduce ? 1 : 2200;
+    (function step(t) {
+      const p = clamp((t - t0) / dur), v = 1 - Math.pow(1 - p, 3);
+      b.textContent = Math.round(end * v); if (p < 1) requestAnimationFrame(step);
+    })(t0);
+  });
+}), { threshold: .4 });
+counted.observe($('.counters'));
+new IntersectionObserver((es, o) => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); o.unobserve(e.target); } }), { threshold: .5 }).observe($('#epic'));
+
+/* =====================================================
+   JS 4. CURSOR
+   ===================================================== */
+if (fine) {
+  const dot = $('#cdot'), ring = $('#cring');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY; document.body.classList.add('cur');
+    dot.style.transform = `translate(${mx}px,${my}px)`;
+  });
+  document.addEventListener('mouseleave', () => document.body.classList.remove('cur'));
+  (function loop() {
+    rx += (mx - rx) * .16; ry += (my - ry) * .16;
+    ring.style.transform = `translate(${rx}px,${ry}px)`; requestAnimationFrame(loop);
+  })();
+  document.addEventListener('mouseover', e => {
+    ring.classList.toggle('big', !!e.target.closest('a,button,input,[role=button],[tabindex],.flipc,.sy,.cal'));
+  });
+}
+
+/* =====================================================
+   JS 5. HERO: title, stars, forest, parallax
+   ===================================================== */
+$('#heroTitle').innerHTML = 'HALLOWEEN'.split('').map((c, i) => `<span style="--i:${i}" aria-hidden="true">${c}</span>`).join('');
+const starsEl = $('#stars');
+for (let i = 0; i < 110; i++) {
+  const s = document.createElement('i');
+  s.style.cssText = `left:${rand(0, 100)}%;top:${rand(0, 70)}%;--t:${rand(2.5, 6)}s;animation-delay:${rand(0, 5)}s;opacity:${rand(.3, .9)}`;
+  starsEl.appendChild(s);
+}
+function treeLine(svg, count, minH, maxH, fill, seed) {
+  let s = seed; const r = () => (s = (s * 16807) % 2147483647) / 2147483647;
+  let d = '';
+  for (let i = 0; i < count; i++) {
+    const x = (i / count) * 1700 - 50 + r() * 40, h = minH + r() * (maxH - minH), w = h * .38, base = 400;
+    for (let t = 0; t < 5; t++) {
+      const top = base - h + t * h * .17, y2 = top + h * .3, hw = w * (.28 + t * .17);
+      d += `M${x.toFixed(1)} ${top.toFixed(1)}L${(x + hw).toFixed(1)} ${y2.toFixed(1)}L${(x - hw).toFixed(1)} ${y2.toFixed(1)}Z`;
+    }
+    d += `M${(x - 4).toFixed(1)} ${base}V${base - h * .2}H${(x + 4).toFixed(1)}V${base}Z`;
+  }
+  svg.innerHTML = `<path d="${d}" fill="${fill}"/><rect y="385" width="1600" height="15" fill="${fill}"/>`;
+}
+treeLine($('#treesFar'), 34, 150, 270, '#0d0618', 7);
+treeLine($('#treesNear'), 14, 230, 380, '#05030a', 13);
+const hero = $('#home'), layers = $$('.layer', hero);
+if (!reduce && fine) {
+  hero.addEventListener('mousemove', e => {
+    const x = e.clientX / innerWidth - .5, y = e.clientY / innerHeight - .5;
+    layers.forEach(l => { const d = +l.dataset.depth; l.style.transform = `translate(${-x * d}px,${-y * d * .6}px)`; });
+  });
+}
+
+/* =====================================================
+   JS 6. PARTICLES (embers + leaves)
+   ===================================================== */
+(function particles() {
+  if (reduce) return;
+  const cv = $('#fx'), ctx = cv.getContext('2d');
+  let W, H; const resize = () => { W = cv.width = innerWidth; H = cv.height = innerHeight; };
+  resize(); addEventListener('resize', resize);
+  const n = innerWidth < 700 ? 22 : 46;
+  const P = Array.from({ length: n }, () => ({ x: rand(0, W), y: rand(0, H), r: rand(.8, 2.4), vy: rand(.15, .55), ph: rand(0, 6.28), a: rand(.25, .7), leaf: false }));
+  const L = Array.from({ length: innerWidth < 700 ? 5 : 11 }, () => ({ x: rand(0, W), y: rand(-H, 0), s: rand(6, 11), vy: rand(.5, 1.1), ph: rand(0, 6.28), rot: rand(0, 6.28), c: ['#9a3a12', '#c8701a', '#7a2210', '#b8902a'][Math.floor(rand(0, 4))] }));
+  let t = 0;
+  (function frame() {
+    if (document.hidden) { requestAnimationFrame(frame); return; }
+    t += .01; ctx.clearRect(0, 0, W, H);
+    P.forEach(p => {
+      p.y -= p.vy; p.x += Math.sin(t * 2 + p.ph) * .35; if (p.y < -10) { p.y = H + 10; p.x = rand(0, W); }
+      const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 4);
+      g.addColorStop(0, `rgba(255,190,100,${p.a})`); g.addColorStop(1, 'rgba(255,120,30,0)');
+      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(p.x, p.y, p.r * 4, 0, 6.28); ctx.fill();
+    });
+    L.forEach(l => {
+      l.y += l.vy; l.x += Math.sin(t * 1.5 + l.ph) * .9; l.rot += .02;
+      if (l.y > H + 20) { l.y = -20; l.x = rand(0, W); }
+      ctx.save(); ctx.translate(l.x, l.y); ctx.rotate(l.rot); ctx.globalAlpha = .55; ctx.fillStyle = l.c;
+      ctx.beginPath(); ctx.ellipse(0, 0, l.s, l.s * .45, 0, 0, 6.28); ctx.fill(); ctx.restore();
+    });
+    requestAnimationFrame(frame);
+  })();
+})();
+
+/* =====================================================
+   JS 7. CALENDAR + WORD MORPH
+   ===================================================== */
+const cal = $('#cal');
+cal.addEventListener('click', () => cal.classList.toggle('on'));
+cal.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); cal.classList.toggle('on'); } });
+const words = [
+  ["All Hallows' Eve", "The full name: the evening before All Saints' Day. \"Hallows\" is an old word for holy people, or saints."],
+  ["All Hallows' Even", "\"Even\" was an old word for evening, so this is the same phrase in a shorter, older form."],
+  ["Hallowe'en", "The apostrophe shows that letters were dropped, as in \"e'en\" for evening. This Scots form appears in writing from the 1500s."],
+  ["Halloween", "Over time the apostrophe disappeared too. The name today carries a small piece of history inside it."]
+];
+const wordEl = $('#word'), capEl = $('#wordCap'), dotsEl = $$('#wordDots i');
+let wTimer = null, wI = 0, wDone = false;
+function showWord(i) {
+  wordEl.classList.add('out');
+  setTimeout(() => {
+    wordEl.textContent = words[i][0]; capEl.textContent = words[i][1];
+    dotsEl.forEach((d, k) => d.classList.toggle('on', k <= i)); wordEl.classList.remove('out');
+  }, reduce ? 0 : 420);
+}
+function playWord() {
+  clearInterval(wTimer); wI = 0; showWord(0);
+  wTimer = setInterval(() => { wI++; if (wI >= words.length) { clearInterval(wTimer); return; } showWord(wI); chime(); }, 3200);
+}
+new IntersectionObserver((es, o) => es.forEach(e => { if (e.isIntersecting) { playWord(); o.disconnect(); } }), { threshold: .5 }).observe($('.morph'));
+$('#wordBtn').addEventListener('click', playWord);
+capEl.textContent = words[0][1];
+
+/* =====================================================
+   JS 8. SAMHAIN SCENE
+   ===================================================== */
+(function samhain() {
+  const NS = 'http://www.w3.org/2000/svg';
+  const wheat = $('#wheat'), snow = $('#snow'), starsG = $('#starsG');
+  for (let i = 0; i < 70; i++) {
+    const x = 20 + i * 14 + rand(-4, 4), y = 300 + Math.sin(i) * 8 + 20 + rand(0, 40), h = rand(50, 80);
+    const g = document.createElementNS(NS, 'g');
+    g.innerHTML = `<path d="M${x} ${y}V${y - h}" stroke="#c9a038" stroke-width="2"/><ellipse cx="${x}" cy="${y - h - 6}" rx="4" ry="11" fill="#f0c850"/>`;
+    wheat.appendChild(g);
+  }
+  for (let i = 0; i < 70; i++) { const c = document.createElementNS(NS, 'circle'); c.setAttribute('cx', rand(0, 1000)); c.setAttribute('cy', rand(0, 400)); c.setAttribute('r', rand(1.5, 3.5)); c.setAttribute('fill', '#fff'); c.setAttribute('opacity', rand(.5, .95)); snow.appendChild(c); }
+  for (let i = 0; i < 50; i++) { const c = document.createElementNS(NS, 'circle'); c.setAttribute('cx', rand(0, 1000)); c.setAttribute('cy', rand(0, 170)); c.setAttribute('r', rand(.8, 1.8)); c.setAttribute('fill', '#fff'); c.setAttribute('opacity', rand(.4, .9)); starsG.appendChild(c); }
+  const pal = [
+    { t: [255, 176, 92], b: [255, 226, 160], g: [120, 86, 30], c: [222, 150, 40] },
+    { t: [26, 14, 52], b: [130, 50, 30], g: [34, 22, 22], c: [140, 50, 20] },
+    { t: [10, 12, 30], b: [40, 52, 92], g: [200, 208, 230], c: [60, 40, 40] }
+  ];
+  const mix = (a, b, t) => a.map((v, i) => Math.round(v + (b[i] - v) * t));
+  const col = (s, k) => { const i = Math.min(1, Math.floor(s)), t = s - i; return 'rgb(' + mix(pal[i][k], pal[i + 1][k], t).join(',') + ')'; };
+  const caps = [
+    "HARVEST. Crops are gathered and stored. The days are still warm and golden. People prepare for the cold, dark months ahead.",
+    "SAMHAIN. The harvest is over and the dark half of the year begins. Bonfires and feasts bring people together. People believed this was a time when the supernatural felt close.",
+    "WINTER. The cold season arrives. The old year has ended, and communities rely on the food they stored. Samhain marked the turn toward this time."
+  ];
+  const slider = $('#season'), btns = $$('#stageBtns button'), capEl = $('#sceneCap');
+  function set(s) {
+    $('#skyT').setAttribute('stop-color', col(s, 't')); $('#skyB').setAttribute('stop-color', col(s, 'b'));
+    $('#ground').setAttribute('fill', col(s, 'g')); $('#canopy').setAttribute('fill', col(s, 'c'));
+    $('#canopy').style.opacity = clamp(1.4 - s * .75);
+    $('#sunG').style.opacity = clamp(1 - s * 1.3); $('#moonG').style.opacity = clamp((s - .4) * 1.5); starsG.style.opacity = clamp((s - .5));
+    wheat.style.opacity = clamp(1 - s * .85); $('#fireG2').style.opacity = clamp(1.25 - Math.abs(s - 1) * 1.5); snow.style.opacity = clamp((s - 1.15) * 1.2);
+    const k = Math.round(s); btns.forEach((b, i) => b.classList.toggle('on', i === k));
+    if (capEl.dataset.k != k) { capEl.dataset.k = k; capEl.textContent = caps[k]; }
+  }
+  slider.addEventListener('input', () => set(+slider.value));
+  let raf;
+  btns.forEach(b => b.addEventListener('click', () => {
+    const to = +b.dataset.s, from = +slider.value, t0 = performance.now(), dur = reduce ? 1 : 1400;
+    cancelAnimationFrame(raf);
+    (function step(t) { const p = clamp((t - t0) / dur), e = p < .5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2; const v = from + (to - from) * e; slider.value = v; set(v); if (p < 1) raf = requestAnimationFrame(step); })(t0);
+    chime();
+  }));
+  set(0);
+  const more = $('#more'), mb = $('#moreBtn');
+  mb.addEventListener('click', () => { const o = more.classList.toggle('open'); mb.setAttribute('aria-expanded', o); mb.textContent = o ? 'CLOSE' : 'LEARN MORE ABOUT SAMHAIN'; });
+})();
+
+/* =====================================================
+   JS 9. THE VEIL (scroll driven)
+   ===================================================== */
+(function veil() {
+  const track = $('#veilTrack'), stage = $('#veilStage'), caps = $$('#veilCap p');
+  function update() {
+    const r = track.getBoundingClientRect(), total = r.height - innerHeight;
+    const p = clamp(-r.top / total);
+    stage.style.setProperty('--p', p.toFixed(3));
+    stage.style.setProperty('--band', (80 - 72 * p).toFixed(1) + 'px');
+    stage.style.setProperty('--gh', clamp((p - .4) * 2.4).toFixed(3));
+    const k = p < .33 ? 0 : p < .7 ? 1 : 2;
+    caps.forEach((c, i) => c.classList.toggle('on', i === k));
+  }
+  addEventListener('scroll', update, { passive: true }); addEventListener('resize', update); update();
+})();
+
+/* =====================================================
+   JS 10. COSTUMES TIMELINE
+   ===================================================== */
+(function costumes() {
+  const T = [
+    ["Disguise", "Long ago, some people believed that spirits might walk near the living at this time of year. According to folk tradition, a disguise or a blackened face was a way to hide from them, or to blend in."],
+    ["Masks & costumes", "In later centuries, people in Ireland and Scotland went door to door in disguise (guising), and in parts of Britain people took part in mumming plays. Costumes were becoming part of community fun."],
+    ["Modern Halloween costumes", "In the 20th century, shops, films, and parties made costumes a main part of Halloween. Today they are about creativity and self-expression: you can be anything you imagine."]
+  ];
+  const bs = $$('#evo button'), p = $('#evoPanel');
+  const set = i => { bs.forEach((b, k) => b.classList.toggle('on', k === i)); p.innerHTML = `<strong style="font-family:var(--display);color:var(--candle);letter-spacing:.1em">${T[i][0].toUpperCase()}</strong><br>${T[i][1]}`; };
+  bs.forEach((b, i) => ['mouseenter', 'focus', 'click'].forEach(ev => b.addEventListener(ev, () => set(i))));
+  set(0);
+})();
+
+/* =====================================================
+   JS 11. PUMPKIN MORPH + LIGHT
+   ===================================================== */
+(function pumpkin() {
+  const A = [200,110,270,100,320,150,315,205,310,260,240,300,200,340,160,300,90,260,85,205,80,150,130,100,200,110];
+  const B = [200,100,290,80,345,150,345,215,345,285,280,330,200,330,120,330,55,285,55,215,55,150,110,80,200,100];
+  const build = p => { let d = `M${p[0]} ${p[1]}`; for (let k = 0; k < 4; k++) { const o = 2 + k * 6; d += `C${p[o]} ${p[o + 1]},${p[o + 2]} ${p[o + 3]},${p[o + 4]} ${p[o + 5]}`; } return d + 'Z'; };
+  const hex = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
+  const lerpC = (a, b, t) => 'rgb(' + hex(a).map((v, i) => Math.round(v + (hex(b)[i] - v) * t)).join(',') + ')';
+  const veg = $('#veg'), rg = $('#pkRange'), lab = $('#pkLabel'), txt = $('#pkText'), st = $('#pkStage'), svg = $('#pkSvg'), sec = $('#pumpkins'), mb = $('#pkMorph');
+  const T1 = "A turnip. In Ireland and Scotland, people carved faces into turnips and other root vegetables, then put a candle or a glowing coal inside. They are small and very hard to carve!";
+  const T2 = "A pumpkin. When the tradition spread in North America, people found pumpkins: large, soft inside, and easy to carve. The pumpkin soon became the symbol of Halloween.";
+  function set(t) {
+    veg.setAttribute('d', build(A.map((v, i) => v + (B[i] - v) * t)));
+    $('#vg1').setAttribute('stop-color', lerpC('#b08ac0', '#ff9a3c', t)); $('#vg2').setAttribute('stop-color', lerpC('#efe6d6', '#b8420f', t));
+    $('#stem').style.opacity = clamp((t - .4) * 1.8); $('#ridges').style.opacity = t; $('#tuft').style.opacity = clamp(1 - t * 1.6); $('#tail').style.opacity = clamp(1 - t * 1.6);
+    const isP = t >= .5; lab.textContent = isP ? 'PUMPKIN' : 'TURNIP'; txt.textContent = isP ? T2 : T1;
+    mb.textContent = isP ? '◂ TRANSFORM ▸ TURNIP' : 'TRANSFORM ▸ PUMPKIN';
+  }
+  let raf, cur = 0;
+  function go(to) {
+    const from = cur, t0 = performance.now(), dur = reduce ? 1 : 2200; cancelAnimationFrame(raf);
+    (function step(t) { const p = clamp((t - t0) / dur), e = p < .5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2; cur = from + (to - from) * e; rg.value = cur; set(cur); if (p < 1) raf = requestAnimationFrame(step); })(t0);
+  }
+  mb.addEventListener('click', () => go(cur >= .5 ? 0 : 1));
+  rg.addEventListener('input', () => { cancelAnimationFrame(raf); cur = +rg.value; set(cur); });
+  set(0);
+  let lit = false, sp = null;
+  function toggle() {
+    lit = !lit; st.classList.toggle('lit', lit); sec.classList.toggle('warm', lit); svg.setAttribute('aria-pressed', lit); chime();
+    clearInterval(sp);
+    if (lit && !reduce) sp = setInterval(() => {
+      const s = document.createElement('i'); s.className = 'spark'; s.style.left = (35 + rand(0, 30)) + '%'; s.style.top = '40%'; s.style.setProperty('--dx', rand(-60, 60) + 'px'); st.appendChild(s); setTimeout(() => s.remove(), 2300);
+    }, 260);
+  }
+  svg.addEventListener('click', toggle);
+  svg.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); } });
+})();
+
+/* =====================================================
+   JS 12. FOLKLORE BOOK
+   ===================================================== */
+(function book() {
+  const S = [
+    ["🍺", "Jack Tricks the Devil", "Long ago in Ireland lived a clever but stingy man called Jack. According to the story, he invited the Devil to share a drink. Jack did not want to pay, so he talked the Devil into turning himself into a coin."],
+    ["✝️", "The Trapped Coin", "Jack put the coin in his pocket, next to a small silver cross. The cross kept the Devil from changing back! Jack set him free only after the Devil promised to leave him alone for a year."],
+    ["🚪", "No Place to Go", "When Jack died, the folktale says he was not allowed into heaven because of his tricks. The Devil, who had promised to leave him alone, would not take him either. Jack was left in the dark."],
+    ["🏮", "The Lantern in the Night", "The Devil tossed him a glowing coal. Jack put it inside a hollowed-out turnip to light his way. Since then he wandered as \"Jack of the Lantern\", and people carved their own lanterns. That is how the jack-o'-lantern got its name."]
+  ];
+  const bk = $('#book'), left = $('#bookLeft'); let page = 0;
+  const leaves = S.map((s, i) => {
+    const l = document.createElement('div'); l.className = 'leaf';
+    l.innerHTML = `<div class="pg f"><h3>${s[1]}</h3><p>${s[2]}</p><p class="cap" style="margin-top:1rem">Page ${i + 1} of ${S.length}</p></div><div class="pg b"><div class="big">${s[0]}</div><p class="cap">${s[1]}</p></div>`;
+    bk.appendChild(l); return l;
+  });
+  const prev = $('#prevPg'), next = $('#nextPg'), no = $('#pgNo');
+  function render() {
+    leaves.forEach((l, i) => { l.classList.toggle('flip', i < page); l.style.zIndex = i < page ? i + 1 : S.length - i + 10; });
+    prev.disabled = page === 0; next.disabled = page === S.length;
+    no.textContent = page === S.length ? 'THE END' : `PAGE ${page + 1} OF ${S.length}`;
+    next.textContent = page === S.length - 1 ? 'FINISH ▸' : 'TURN PAGE ▸';
+    const done = page === S.length;
+    // keep the story on small screens: show last story text when finished
+    left.innerHTML = page === 0 ? '<div class="cover"><div class="big">📖</div><h3>The Tale of Stingy Jack</h3><p class="cap">An old Irish folktale, retold for today</p></div>' : done ? '<div class="cover"><div class="big">🎃</div><h3>The End</h3><p class="cap">Folktales have many versions. This is one of them.</p></div>' : `<div class="cover"><div class="big">${S[page - 1][0]}</div><p class="cap">${S[page - 1][1]}</p></div>`;
+  }
+  next.addEventListener('click', () => { if (page < S.length) { page++; render(); tone(300, .5, 'triangle', .06); } });
+  prev.addEventListener('click', () => { if (page > 0) { page--; render(); tone(260, .5, 'triangle', .06); } });
+  render();
+})();
+
+/* =====================================================
+   JS 13. TRICK OR TREAT HOUSE
+   ===================================================== */
+(function tot() {
+  const door = $('#door'), bub = $('#bubble'), kn = $('#knock'), n = $('#candyN'), st = $('.street');
+  let open = false, busy = false, count = 0;
+  const treats = ['🍬', '🍫', '🍭', '🍪', '🧁', '🍩'];
+  kn.addEventListener('click', () => {
+    if (busy) return; busy = true;
+    if (open) { door.classList.remove('open'); bub.classList.remove('show'); open = false; kn.textContent = '🚪 KNOCK'; busy = false; return; }
+    knockSnd(); door.classList.add('knock');
+    setTimeout(() => {
+      door.classList.remove('knock'); door.classList.add('open'); open = true; bub.classList.add('show'); chime();
+      for (let i = 0; i < 8; i++) setTimeout(() => {
+        const c = document.createElement('span'); c.className = 'candy'; c.textContent = treats[Math.floor(rand(0, treats.length))];
+        c.style.setProperty('--cx', rand(-90, 40) + 'px'); c.style.setProperty('--cy', rand(-110, -40) + 'px'); st.appendChild(c);
+        setTimeout(() => c.remove(), 1500); count++; n.textContent = count; tone(700 + i * 40, .2, 'sine', .05);
+      }, 350 + i * 130);
+      kn.textContent = '🚪 CLOSE THE DOOR'; busy = false;
+    }, reduce ? 50 : 900);
+  });
+})();
+
+/* =====================================================
+   JS 14. CHAIN TIMELINES (Christianity + Pop culture)
+   ===================================================== */
+function tabs(btnSel, panelSel, data) {
+  const bs = $$(btnSel), p = $(panelSel);
+  const set = i => { bs.forEach((b, k) => b.classList.toggle('on', k === i)); p.innerHTML = `<h3>${data[i][0]}</h3><p>${data[i][1]}</p>`; };
+  bs.forEach((b, i) => ['click', 'mouseenter', 'focus'].forEach(ev => b.addEventListener(ev, () => set(i)))); set(0);
+}
+tabs('#chain button', '#chainPanel', [
+  ["Ancient Celtic traditions", "Festivals such as Samhain marked the end of the harvest and the start of winter in Celtic-speaking regions. People believed this was a time when the supernatural felt close."],
+  ["Christian traditions", "The Church honored saints on All Saints' Day (November 1) and remembered the dead on All Souls' Day (November 2). The evening before became known as All Hallows' Eve."],
+  ["European folk customs", "Over the centuries, customs such as bonfires, soul-cakes, guising, and carved lanterns developed in different regions and mixed with religious and seasonal traditions."],
+  ["Modern Halloween", "Today's Halloween is a blend of all these layers, plus modern popular culture. It is celebrated differently by different people, religious and non-religious alike."]
+]);
+tabs('#vt button', '#vtPanel', [
+  ["Ancient traditions", "Seasonal festivals such as Samhain marked the end of the harvest. People believed it was a special, uncertain time of year."],
+  ["Medieval Europe", "Christian feasts for saints and the dead mixed with folk customs: bonfires, soul-cakes, disguises, and stories of spirits."],
+  ["Immigration", "In the 1800s, many Irish and Scottish people moved to North America and brought their customs. The traditions spread and changed in the new land."],
+  ["20th century", "Halloween became a community holiday with parties, parades, and children's trick-or-treating. Radio, TV, films, and shops helped make it a big part of popular culture."],
+  ["Modern Halloween", "Today Halloween is a global cultural event focused on creativity, costumes, and community, and it is shaped differently in each country."]
+]);
+
+/* =====================================================
+   JS 15. COUNTRY CARDS
+   ===================================================== */
+(function countries() {
+  const C = [
+    ["🇺🇸", "USA", "Costumes, trick-or-treating, decorations", "Halloween is a huge seasonal event. Neighborhoods decorate houses, children trick-or-treat, and pumpkin carving is a family tradition."],
+    ["🇨🇦", "CANADA", "Trick-or-treating, harvest feeling", "Close to the US in style. Early mentions of \"trick or treat\" in print come from Canada in the 1920s."],
+    ["🇮🇪", "IRELAND", "Historical roots, modern celebrations", "Often called the home of Halloween's roots. Today there are bonfires, parades, and festivals, plus a traditional cake called barmbrack."],
+    ["🇬🇧", "UNITED KINGDOM", "Guising, parties, Bonfire Night soon after", "Scotland keeps guising alive. In England, Halloween shares the season with Bonfire Night on November 5."],
+    ["🇯🇵", "JAPAN", "Costumes, events, themed entertainment", "Costume parades, theme-park events, shopping, and social media make Halloween a big, creative autumn event."],
+    ["🇰🇷", "SOUTH KOREA", "Parties, costumes, themed events", "Young people enjoy Halloween parties, themed cafés, and costume gatherings in big cities."],
+    ["🇲🇽", "MEXICO", "Día de Muertos nearby", "Day of the Dead (Nov 1–2) is a separate tradition honoring family who have died, with altars and marigolds. Some Halloween styles appear too."],
+    ["🌍", "AND MANY MORE", "Celebrated in different ways", "From Europe to Latin America to Asia, people mix Halloween with their own local culture and traditions."]
+  ];
+  $('#countries').innerHTML = C.map((c, i) => `<div class="flipc hov reveal" style="--d:${(i % 4) * .08}s" role="button" tabindex="0" aria-pressed="false"><div class="in"><div class="fc"><div class="fl">${c[0]}</div><h3>${c[1]}</h3><p>${c[2]}</p></div><div class="bc"><div><b>${c[1]}</b>${c[3]}</div></div></div></div>`).join('');
+})();
+
+/* =====================================================
+   JS 16. SYMBOLS GALLERY + DIALOG
+   ===================================================== */
+(function symbols() {
+  const S = [
+    ["🎃", "PUMPKIN", "Glowing faces in the dark.", ["Jack-o'-lanterns began with carved turnips and other vegetables in Ireland and Scotland.", "In North America, pumpkins became the favorite because they are large and easy to carve."]],
+    ["👻", "GHOST", "The returning spirit.", ["Ghosts stand for the old belief that the spirits of the dead could return at this time of year.", "Today they are usually friendly or funny, appearing in decorations and costumes."]],
+    ["🧙", "WITCH", "Magic in folklore.", ["Witches appear in many European folk stories and in the history of fear and belief about magic.", "Today the witch is a popular character in stories, movies, and costumes."]],
+    ["🦇", "BAT", "Creature of the night.", ["Bats are active at night and live in dark places, so they became linked with spooky stories.", "Fun fact: bonfires at old autumn festivals attracted insects, which in turn attracted bats. Some writers mention this, though it is a popular explanation rather than a proven origin."]],
+    ["🕷️", "SPIDER", "Webs and old houses.", ["Spiders and cobwebs suggest empty, old, forgotten places, perfect for a spooky atmosphere.", "In folklore, spiders have been seen as both lucky and unlucky in different cultures."]],
+    ["💀", "SKELETON", "A reminder of mortality.", ["Skeletons connect with the theme of death and remembering the dead that runs through autumn traditions.", "Many cultures have their own skeleton imagery, such as Mexico's Day of the Dead."]],
+    ["🌕", "FULL MOON", "Light in the dark.", ["The moon has long marked time, and many autumn festivals were set by the seasons and sky.", "A bright full moon behind bare trees has become the classic Halloween scene."]],
+    ["🍬", "CANDY", "The modern treat.", ["Treats come from older customs of giving food at the door, such as soul cakes.", "In the 20th century, candy makers helped make sweets the main treat for trick-or-treaters."]]
+  ];
+  $('#syms').innerHTML = S.map((s, i) => `<button class="sy reveal" style="--d:${(i % 4) * .08}s" data-i="${i}" aria-haspopup="dialog"><span class="i">${s[0]}</span><h3>${s[1]}</h3><p>${s[2]}</p></button>`).join('');
+  const dlg = $('#symDlg');
+  $$('#syms .sy').forEach(b => b.addEventListener('click', () => {
+    const s = S[+b.dataset.i]; $('#symI').textContent = s[0]; $('#symName').textContent = s[1];
+    $('#symBody').innerHTML = s[3].map(t => `<p>${t}</p>`).join('');
+    if (dlg.showModal) dlg.showModal(); else dlg.setAttribute('open', ''); chime();
+  }));
+  $('#symX').addEventListener('click', () => dlg.close());
+  dlg.addEventListener('click', e => { if (e.target === dlg) dlg.close(); });
+})();
+
+/* =====================================================
+   JS 17. HORIZONTAL TIMELINE
+   ===================================================== */
+(function timeline() {
+  const T = [
+    ["🔥", "Ancient Celtic Era", "Over 1,000 years ago and earlier", "Samhain and the end of harvest. Communities in Celtic-speaking lands marked the start of the dark half of the year with gatherings and feasts."],
+    ["⛪", "Christian Era", "About 700s to 1000s", "All Hallows' Eve, All Saints' Day, and All Souls' Day develop. The name \"Halloween\" comes from this tradition."],
+    ["🏰", "Medieval Europe", "Middle Ages", "Folk customs and beliefs about spirits grow: soul-cakes, bonfires, disguises, and stories passed down by families."],
+    ["🚢", "Migration to North America", "1700s to 1800s", "Traditions spread and change. Irish and Scottish emigration, especially from the 1840s, brings autumn customs across the Atlantic."],
+    ["🍬", "20th Century", "1900s", "Trick-or-treating and popular culture grow. Parties, films, TV, and shops turn Halloween into a large seasonal event."],
+    ["🌍", "Today", "Now", "Halloween becomes a global cultural event, adapted in each place, from Ireland to Japan."]
+  ];
+  const tr = $('#tlTrack'), sc = $('#tl'), pr = $('#tlProg');
+  tr.innerHTML = T.map(t => `<article class="ti"><span class="em">${t[0]}</span><div class="yr">${t[2].toUpperCase()}</div><h3>${t[1]}</h3><p>${t[3]}</p></article>`).join('');
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); }), { threshold: .45 });
+  $$('.ti').forEach(i => io.observe(i));
+  const upd = () => { const m = sc.scrollWidth - sc.clientWidth; pr.style.width = (m > 0 ? 100 * sc.scrollLeft / m : 100) + '%'; };
+  sc.addEventListener('scroll', upd, { passive: true }); upd();
+  const step = () => Math.min(420, sc.clientWidth * .8);
+  $('#tlPrev').addEventListener('click', () => sc.scrollBy({ left: -step(), behavior: reduce ? 'auto' : 'smooth' }));
+  $('#tlNext').addEventListener('click', () => sc.scrollBy({ left: step(), behavior: reduce ? 'auto' : 'smooth' }));
+  let down = false, sx = 0, sl = 0;
+  sc.addEventListener('mousedown', e => { down = true; sx = e.pageX; sl = sc.scrollLeft; sc.classList.add('drag'); });
+  addEventListener('mouseup', () => { down = false; sc.classList.remove('drag'); });
+  addEventListener('mousemove', e => { if (down) sc.scrollLeft = sl - (e.pageX - sx); });
+})();
+
+/* =====================================================
+   JS 18. DID YOU KNOW + MYTH/FACT
+   ===================================================== */
+(function cards() {
+  const D = [
+    ["Pumpkins were not the original vegetable used for jack-o'-lanterns.", "Turnips and other root vegetables came first in Ireland and Scotland. Pumpkins became popular later in North America."],
+    ["October 31 is Halloween, but the name is connected to All Hallows' Eve.", "\"Hallows\" means saints. Halloween is a shortened form of \"All Hallows' Eve\", the evening before All Saints' Day."],
+    ["Modern Halloween combines traditions from different cultures.", "Celtic seasonal customs, Christian feasts, European folk traditions, immigrant culture, and modern popular culture all play a part."],
+    ["Costumes were connected to older ideas about supernatural beings.", "Some folk traditions linked disguises with hiding from spirits. Over time costumes became mostly about fun and creativity."],
+    ["Trick-or-treating became especially popular in North America.", "Older customs like souling and guising existed in Europe, but the modern \"trick or treat\" form grew in the 20th century in the US and Canada."],
+    ["Halloween is celebrated in Japan in its own way.", "Costume events and themed entertainment are the main focus, a good example of how traditions change when they travel."]
+  ];
+  $('#dyk').innerHTML = D.map((d, i) => `<div class="flipc reveal" style="--d:${(i % 3) * .1}s" role="button" tabindex="0" aria-pressed="false"><div class="in"><div class="fc">${d[0]}<span class="hint2">CLICK TO FLIP</span></div><div class="bc">${d[1]}</div></div></div>`).join('');
+  const M = [
+    ["Halloween was originally an American holiday.", false, "Halloween has roots in older European traditions, especially Celtic seasonal festivals and Christian feasts. America shaped its modern form."],
+    ["Pumpkins were always used for jack-o'-lanterns.", false, "Turnips and other root vegetables were used first. Pumpkins became common later in North America."],
+    ["Halloween has connections to Samhain.", true, "Halloween has roots in the ancient Celtic festival of Samhain, though scholars still discuss how direct the link is."],
+    ["Modern Halloween is celebrated exactly the same everywhere.", false, "Each country has its own style: costumes in Japan, guising in Scotland, trick-or-treating in North America."],
+    ["The name \"jack-o'-lantern\" comes from Irish folklore.", true, "The name is linked to the folktale of Stingy Jack, who wandered with a glowing coal in a turnip."],
+    ["Trick-or-treating is thousands of years old.", false, "Related customs such as souling and guising are old, but the modern \"trick or treat\" form is from the 20th century."]
+  ];
+  $('#myths').innerHTML = M.map((m, i) => `<div class="flipc myth reveal" style="--d:${(i % 3) * .1}s" role="button" tabindex="0" aria-pressed="false"><div class="in"><div class="fc">"${m[0]}"</div><div class="bc ${m[1] ? 't' : 'f'}"><div><strong>${m[1] ? 'TRUE' : 'FALSE'}</strong>${m[2]}</div></div></div></div>`).join('');
+  const score = $('#score');
+  // flip handler for all flip cards
+  document.addEventListener('click', e => {
+    const c = e.target.closest('.flipc'); if (!c) return; flip(c);
+  });
+  document.addEventListener('keydown', e => {
+    if ((e.key === 'Enter' || e.key === ' ') && e.target.classList && e.target.classList.contains('flipc')) { e.preventDefault(); flip(e.target); }
+  });
+  function flip(c) {
+    const on = c.classList.toggle('on'); c.setAttribute('aria-pressed', on); tone(on ? 520 : 380, .25, 'triangle', .05);
+    score.textContent = 'REVEALED: ' + $$('.myth.on').length + ' / ' + M.length;
+  }
+})();
+
+/* =====================================================
+   JS 19. FINAL CHOICE
+   ===================================================== */
+(function meaning() {
+  const O = [
+    ["🎃", "FUN", "Parties, costumes, and laughing with friends."],
+    ["👻", "MYSTERY", "The unknown, the stories, and the shivers."],
+    ["🎭", "CREATIVITY", "Making a character and becoming someone new."],
+    ["📚", "HISTORY", "Centuries of change, hidden inside one night."],
+    ["🍬", "TRADITION", "Knocking on doors, carving pumpkins, doing it together."],
+    ["🌍", "CULTURE", "A tradition that travels and changes in every country."]
+  ];
+  const box = $('#opts'), resp = $('#resp');
+  box.innerHTML = O.map((o, i) => `<button class="opt" data-i="${i}"><span>${o[0]}</span>${o[1]}</button>`).join('');
+  $$('.opt', box).forEach(b => b.addEventListener('click', e => {
+    $$('.opt', box).forEach(x => x.classList.remove('on')); b.classList.add('on');
+    const o = O[+b.dataset.i]; resp.classList.add('swap'); chime();
+    setTimeout(() => { resp.innerHTML = `Halloween can be all of these things.<small>For you it is <b>${o[1].toLowerCase()}</b>: ${o[2]}</small>`; resp.classList.remove('swap'); }, reduce ? 0 : 300);
+    if (!reduce) {
+      const r = b.getBoundingClientRect();
+      for (let k = 0; k < 14; k++) {
+        const s = document.createElement('span'); s.className = 'burst'; s.textContent = o[0];
+        s.style.left = (r.left + r.width / 2) + 'px'; s.style.top = (r.top + r.height / 2) + 'px';
+        s.style.setProperty('--bx', rand(-160, 160) + 'px'); s.style.setProperty('--by', rand(-200, 60) + 'px'); s.style.setProperty('--br', rand(-90, 90) + 'deg');
+        document.body.appendChild(s); setTimeout(() => s.remove(), 1500);
+      }
+    }
+  }));
+})();
+
+/* =====================================================
+   JS 20. MAP TRIGGER
+   ===================================================== */
+new IntersectionObserver((es, o) => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('go'); o.unobserve(e.target); } }), { threshold: .4 }).observe($('#map'));
+
+/* close mobile menu with Escape */
+addEventListener('keydown', e => { if (e.key === 'Escape') { menu.classList.remove('open'); burger.setAttribute('aria-expanded', 'false'); } });
+</script>
+</body>
+</html>
